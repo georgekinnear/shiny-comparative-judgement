@@ -1,0 +1,179 @@
+---
+- item-num: 1
+  item-name: Experimental evidence
+  img-src: proofs/proof-1.png
+  html: |
+    \[ 1 = 1 = 1^2 \]
+      \[ 1+3 = 4 = 2^2 \]
+      \[ 1+3+5 = 9 = 3^2 \]
+      \[ 1+3+5+7 = 16 = 4^2 \]
+      \[ 1+3+5+7+9 = 25 = 5^2 \]
+      \[ 1+3+5+7+9+11 = 36 = 6^2 \]
+    \[ \vdots\]
+    \[ 1+3+5+7+\cdots+(2n-1) = n^2.\]
+   
+- item-num: 2
+  item-name: Pictorial I (L-shaped)
+  img-src: proofs/proof-2.png
+  html: |
+    <img src="proofs/fig1.svg" style = "width: 12em" class="center-block">
+    
+    \[ 1+3+5+7+\cdots+(2n-1) = n^2.\]
+
+- item-num: 3
+  item-name: Pictorial II (Pyramid)
+  img-src: proofs/proof-3.png
+  html: |
+    <img src="proofs/fig2.svg" style = "width: 12em" class="center-block">
+    
+    \[ 1+3+5+7+\cdots+(2n-1) = \frac{1}{4}(2n)^2 = n^2.\]
+
+- item-num: 4
+  item-name: Arithmetic Progression
+  img-src: proofs/proof-4.png
+  html: |
+    \[1+3+5+7+\cdots+(2n-1)\]
+    is an arithmetic progression with difference \(2\) and \(n\) terms. The first term \(a_1=1\), and the last term \(a_n=2n-1\), and the sum of an AP is \( \frac{n}{2}(a_1+a_n)\), which in this case is \(\frac{n}{2}(1+2n-1)=n^2\).
+
+- item-num: 5
+  item-name: Reversed list
+  img-src: proofs/proof-5.png
+  html: |
+    Write the terms twice, with the second list reversed.
+    \[
+    \begin{array}{cccccccccc}
+    1    & + & 3    & + & 5    & + \cdots + & 2n-3 & + & 2n-1 \\\\
+    2n-1 & + & 2n-3 & + & 2n-5 & + \cdots + &    3 & + & 1
+    \end{array}
+    \]
+    Each column has total \(2n\) and there are \(n\) columns.  So the total is \(2n^2\) proving \(\sum_{k=1}^n (2k-1) = n^2\).
+
+
+- item-num: 6
+  item-name: Telescope
+  img-src: proofs/proof-6.png
+  html: |
+    Notice that \( 2k-1 = k^2 - (k-1)^2\), so that adding up we have
+    \[ \sum_{k=1}^n (2k-1) = \sum_{k=1}^n k^2 - (k-1)^2.\]
+    However in
+    \[ \sum_{k=1}^n k^2 - (k-1)^2 = (1^2-0^2)+(2^2-1^2)+(3^2-2^2)+\cdots+(n^2-(n-1)^2)\]
+    all terms cancel except two, one from the first term and one from the last, i.e. \(-0^2+n^2\), leaving \(n^2\).
+
+
+- item-num: 7
+  item-name: Backwards reasoning
+  img-src: proofs/proof-7.png
+  html: |
+    The Fundamental Theorem of Finite Differences says that \(S_n = \sum_{k=1}^n a_k\) if and only if \(a_n = S_{n}-S_{n-1}\).
+    
+    Consider \(S_n=n^2\) then \(S_n-S_{n-1}=n^2-(n-1)^2=2n-1\).
+    Hence  \(\sum_{k=1}^n (2k-1) = n^2\).
+
+
+- item-num: 8
+  item-name: Rearranging I
+  img-src: proofs/proof-8.png
+  html: |
+    We use the standard results \(\sum_{k=1}^n k = \frac{n(n+1)}{2}\) and \(\sum_{k=1}^n 1 = n\) and rearrange
+    \[ \sum_{k=1}^n (2k-1) = 2\sum_{k=1}^n k - \sum_{k=1}^n 1 = 2\frac{n(n+1)}{2}-n = n^2.\]
+
+
+- item-num: 9
+  item-name: Rearranging II
+  img-src: proofs/proof-9.png
+  html: |
+    We use the standard result \(\sum_{k=1}^n k = \frac{n(n+1)}{2}\) and rearrange
+    \[ \sum_{k=1}^n \underbrace{2k-1}_{\mbox{odd}} =
+    (\underbrace{1+2+3+\cdots+2n}_{\mbox{all}}) - (\underbrace{2+4+6+\cdots +2n}_{\mbox{even}})
+    \]
+    \[= (1+2+3+\cdots+2n) - 2(1+2+3+\cdots +n)\]
+    \[ \sum_{k=1}^n (2k-1) = \sum_{k=1}^{2n} k -  2\sum_{k=1}^{n} k\]
+    \[ = \frac{2n(2n+1)}{2} - 2\frac{n(n+1)}{2} = n^2.\]
+
+
+- item-num: 10
+  item-name: Induction
+  img-src: proofs/proof-10.png
+  html: |
+    Let \(P(n)\) be the statement \(\sum_{k=1}^n (2k-1) = n^2\).
+    
+    Since \(\sum_{k=1}^1 (2k-1) = 1 = 1^2\) we see \(P(1)\) is true.
+    
+    Assume \(P(n)\) is true then
+    \[ \sum_{k=1}^{n+1} (2k-1) = \sum_{k=1}^n (2k-1) + (2(n+1)-1) = n^2 + 2n +1 = (n+1)^2.\]
+    Hence \(P(n+1)\) is true.
+    
+    Since \(P(1)\) is true and \(P(n+1)\) follows from \(P(n)\) we conclude that \(P(n)\) is true for all \(n\) by the principle of mathematical induction.
+
+
+- item-num: 11
+  item-name: Contradiction
+  img-src: proofs/proof-11.png
+  html: |
+    To prove \(\forall\, n\in\mathbb{N}: \sum_{k=1}^n (2k-1) = n^2\),
+    assume, for a contradiction, that \(\exists\, n\in\mathbb{N}: \sum_{k=1}^n (2k-1) \neq n^2\).
+    Let \(n^*\) be the smallest such example.  Note, \(n^*>1\) since \((2\times 1)-1 = 1^2\).
+    
+    If \(\sum_{k=1}^{n^*} (2k-1) > {n^*}^2\) then
+    \[ \sum_{k=1}^{n^*} (2k-1) = 2n^*-1 + \sum_{k=1}^{n^*-1} (2k-1) > {n^*}^2\]
+    and so
+    \[ \sum_{k=1}^{n^*-1} (2k-1) > {n^*}^2 - 2n^*+1 = (n^*-1)^2.\]
+    This proves \(\sum_{k=1}^{n^*-1} (2k-1) \neq (n^*-1)^2\), which contradicts the minimality of \(n^*\).  The case \(\sum_{k=1}^{n^*} (2k-1) < {n^*}^2\) leads to an identical contradiction.
+
+- item-num: 12
+  item-name: Linear system
+  img-src: proofs/proof-12.png
+  html: |
+    Since the sum is always an integer and
+    \(S_n=\sum_{k=1}^{n} (2k-1) \leq n(2n-1)\) the growth of \(S_n\) is quadratic in \(n\).  We therefore assume
+    \[ \sum_{k=1}^{n} (2k-1) = an^2 + bn +c\quad \forall\, n\in \mathbb{N}.\]
+    Since this formula holds for all \(n\) it must hold for \(n=1,2,3\).  Hence
+    \[
+    \begin{array}{lcll}
+     1    & = & a+b+c,   & (n=1)    \\\\
+     1+3  & = & 4a+2b+c, & (n=2)  \\\\
+     1+3+5& = & 9a+3b+c, & (n=3)\\\\
+    \end{array}
+    \]
+    This is a linear system in \(a,b,c\) which we set up as
+    \[ \left( \begin{array}{ccc} 1 & 1 & 1 \\\\ 4 & 2 & 1 \\\\ 9 & 3 & 1 \end{array} \right) \left(\begin{array}{c} a \\\\ b \\\\ c \end{array}\right) = \left(\begin{array}{c} 1 \\\\ 4 \\\\ 9\end{array}\right).\]
+    The matrix clearly has non-zero determinant, so the system has a unique solution.
+    This solution is (exercise to check) \(a=1\), \(b=c=0\).  Hence \(\sum_{k=1}^n (2k-1) = n^2\).
+
+
+- item-num: 13
+  item-name: Undetermined coefficients
+  img-src: proofs/proof-13.png
+  html: |
+    Assume \(1+3+5+7+\cdots + (2n-1) = A+Bn+Cn^2+Dn^3+En^4+\cdots\).
+    Then
+    \[ \begin{align*} &1+3+5+7+\cdots + (2n-1)+(2(n+1)-1) \\\\ &= A+B(n+1)+C(n+1)^2+D(n+1)^3+E(n+1)^4+\cdots\end{align*}\]
+    Subtracting
+    \[ 2n+1=B+C(2n+1)+D(3n^2+3n+1)+E(4n^3+6n^2+4n+1) + \cdots\]
+    Equating powers of \(n^2,n^3,\ldots\) on both sides we see \(D=E=...=0\).
+    \[ 2n+1=B+C(2n+1).\]
+    Hence \(B=0\) and \(C=1\), from which \(A=0\) and so \(\sum_{k=1}^n (2k-1) = n^2\).
+
+
+- item-num: 14
+  item-name: Induction (b)
+  img-src: proofs/proof-14.png
+  html: |
+    Consider the conjecture \(\sum_{k=1}^n (2k-1) = n^2\).
+    First note \(\sum_{k=1}^1 (2k-1) = 1 = 1^2\).
+    Now,
+    \[ \sum_{k=1}^{n+1} (2k-1) = \sum_{k=1}^n (2k-1) + (2(n+1)-1) = n^2 + 2n +1 = (n+1)^2.\]
+    Hence \(\sum_{k=1}^n (2k-1) = n^2\) by induction.
+
+
+- item-num: 15
+  item-name: Pictorial II (b)
+  img-src: proofs/proof-15.png
+  html: |
+    In the picture below, the stepped triangle at the bottom has \(1+3+5+\cdots+(2n-1)\) dots.  
+    
+    <img src="proofs/fig2.svg" style = "width: 12em" class="center-block">
+    
+    Four copies of this triangle can be fitted together to give a square where the side length is \((2n-1)+1\) so the number of dots is \((2n)^2\). Hence  
+    \[ 1+3+5+7+\cdots+(2n-1) = \frac{1}{4}(2n)^2 = n^2.\]
+

@@ -21,20 +21,16 @@ onStop(function() {
 #
 # Define the various judging groups
 #
-studies <- pool %>% 
-  tbl("studies") %>% 
-  collect()
-# tibble::tribble(
-#   ~study,                                                                        ~judging_prompt, ~judging_method, ~target_judges, ~judgements_per_judge,
-#   "vehicle_pairs",                                      "Which is the most typical example of a vehicle?",        "binary",            20L,                  100L,
-#   "vehicle_slider",                                      "Which is the most typical example of a vehicle?",        "slider",            20L,                  100L,
-#   "violation_pairs", "A sign says No Vehicles in the Park. Which example would be the the worst violation?",        "binary",            20L,                  100L,
-#   "violation_slider", "A sign says No Vehicles in the Park. Which example would be the the worst violation?",        "slider",            20L,                  100L,
-#   "nuisance_pairs",                   "Which of the two examples would be the biggest nuisance in a park?",        "binary",            20L,                  100L,
-#   "nuisance_slider",                   "Which of the two examples would be the biggest nuisance in a park?",        "slider",            20L,                  100L
-# )
+# studies <- pool %>% 
+#   tbl("studies") %>% 
+#   collect()
+studies <- tibble::tribble(
+  ~study,                                                                        ~judging_prompt, ~judging_method, ~target_judges, ~judgements_per_judge,
+  "regular_cj",                                      "Which is the better item?",        "binary",            20L,                  30L,
+  "chained_cj",                                      "Which is the better item?",        "binary",            20L,                  30L,
+)
 
-scripts <- read_yaml("vehicles.yml") %>%
+scripts <- read_yaml("items-to-be-judged.yml") %>%
   purrr::map(as_tibble_row) %>%
   enframe(name = NULL) %>%
   unnest(cols = c("value")) %>% 
@@ -154,8 +150,8 @@ server <- function(input, output, session) {
   # These will be global variables within each session
   assigned_study <- NULL
   session_info <- NULL
-  prolific_id <- NULL
   judge_id <- NULL
+  judge_code <- NULL
   judging_method <- NULL
   starting_pair <- NULL # this will be set to 1 by default, but when resuming a session it will record where to start
   
@@ -180,11 +176,11 @@ server <- function(input, output, session) {
         ),
       by = "judge_id"
     ) %>% 
-    left_join(
-      pool %>% tbl("comments") %>% 
-        collect(),
-      by = "judge_id"
-    ) %>% 
+    # left_join(
+    #   pool %>% tbl("comments") %>% 
+    #     collect(),
+    #   by = "judge_id"
+    # ) %>% 
     left_join(
       # attention checks
       all_existing_judgements %>% 
@@ -193,8 +189,6 @@ server <- function(input, output, session) {
         mutate(
           attention_check_result = case_when(
             won == 0 ~ TRUE,
-            left == 0 & score < 0 ~ TRUE,
-            right == 0 & score > 0 ~ TRUE,
             TRUE ~ FALSE,
           ),
         ) %>% 
@@ -209,7 +203,7 @@ server <- function(input, output, session) {
   study_progress <<- studies %>% 
     full_join(
       judges %>% 
-        select(judge_id, prolific_id, study_id, num_judgements, attention_checks_passed),
+        select(judge_id, judge_code, study_id, num_judgements, attention_checks_passed),
       by = c("study" = "study_id")
     )
   study_status <<- studies %>% 
@@ -228,11 +222,12 @@ server <- function(input, output, session) {
   
   observe({
     query <- parseQueryString(session$clientData$url_search)
-    if (!is.null(query[['PROLIFIC_PID']])) {
-      prolific_id <<- query[['PROLIFIC_PID']]
+    
+    if (isTruthy(query[['JUDGE']])) {
+      judge_code <<- query[['JUDGE']]
       # Check if this user already exists in the DB: if so, pick up from where they left off
       session_info <<- pool %>% tbl("judges") %>%
-        filter(prolific_id == !!prolific_id) %>%
+        filter(shiny_info == !!judge_code) %>%
         arrange(-judge_id) %>%
         collect() %>%
         slice(1)
@@ -248,8 +243,8 @@ server <- function(input, output, session) {
         # ID is not recognised, so proceed as a new user
         starting_pair <<- 1
       }
-    } else if (!is.null(query[['ADMIN_USER']])) {
-      # TODO - admin dashboard
+    } else if (isTruthy(query[['ADMIN_USER']]=="AdminPassword123")) {
+      # admin dashboard
       output$pageContent <- renderUI({
         tagList(
           navbarPage("CJ Dashboard",
@@ -270,15 +265,16 @@ server <- function(input, output, session) {
         )
       })
     } else {
-      prolific_id <<- "None"
-      # Quit with a warning
-      output$pageContent <- renderUI({
-        tagList(
-          h3("Participant ID not found"),
-          p("The PROLIFIC_PID is missing from the URL."),
-          p("Please return to Prolific and try again."),
-        )
-      })
+      # TODO - make this assign them a code
+      # judge_code <<- "None"
+      # # Quit with a warning
+      # output$pageContent <- renderUI({
+      #   tagList(
+      #     h3("Judge code not found"),
+      #     p("The JUDGE is missing from the URL."),
+      #   )
+      # })
+      starting_pair <<- 1
     }
   })
     
@@ -302,8 +298,6 @@ server <- function(input, output, session) {
     
     if(starting_pair > 1) {
       # They are resuming a previous session; session_info will already have been recreated
-      print("here")
-      print(starting_pair)
       print(session_info)
       judge_id <<- session_info$judge_id
       assigned_study <<- studies %>% filter(study == !!session_info$study_id)
@@ -311,7 +305,7 @@ server <- function(input, output, session) {
       print(paste("Returning judge with ID:", judge_id))
     } else {
       # They are a new user
-    
+      
       # Now they have consented, assign them to a condition
       assigned_study <<- assign_to_study()
       
@@ -320,8 +314,7 @@ server <- function(input, output, session) {
       session_info <<- tibble(
         shiny_info = session$token,
         shiny_timestamp = as.character(Sys.time()),
-        study_id = assigned_study[["study"]],
-        prolific_id = prolific_id,
+        study_id = assigned_study[["study"]]
       )
       dbWriteTable(pool,
                    "judges",
@@ -432,9 +425,7 @@ server <- function(input, output, session) {
     )
   }
   next_pair = function(old_pair_num) {
-    # print("next_pair")
-    # print(old_pair_num)
-    # print(nrow(pairs))
+
     # move on to the next pair
     pair_to_return = old_pair_num + 1
     
@@ -460,14 +451,8 @@ server <- function(input, output, session) {
   
   observeEvent(input$startComparing, {
     
-    # pairs <<- make_pairs(pairs_to_make = 100)
-    pairs <<- make_pairs(pairs_to_make = 95) %>% 
-      # add attention checks after pairs 15, 32, 50, 75, 90
-      add_row(left = 0, right = sample(c(1:25))[1], .after = 15) %>% 
-      add_row(right = 0, left = sample(c(1:25))[1], .after = 32) %>%
-      add_row(left = 0, right = sample(c(1:25))[1], .after = 50) %>% 
-      add_row(right = 0, left = sample(c(1:25))[1], .after = 75) %>%
-      add_row(right = 0, left = sample(c(1:25))[1], .after = 90) %>%
+    # TODO - instead of hard-coded 30, get it to work using assigned_study[["judgements_per_judge"]]
+    pairs <<- make_pairs(pairs_to_make = 30) %>% 
       mutate(pair_num = row_number())
     print(pairs)
     pair$pairs_available <- nrow(pairs)
@@ -502,8 +487,8 @@ server <- function(input, output, session) {
     # print(pair)
   })
   
-  vehicle_name <- function(item_id) {
-    scripts %>% filter(item_num == item_id) %>% pull(markdown) %>% as.character()
+  item_name <- function(item_id) {
+    scripts %>% filter(item_num == item_id) %>% pull(markdown) %>% as.character() %>% HTML() %>% withMathJax()
   }
 
   output$comments <- renderUI({
@@ -517,12 +502,12 @@ server <- function(input, output, session) {
       fluidRow(
         column(6, actionButton(
           "chooseLeft",
-          label = vehicle_name(pair$left),
+          label = item_name(pair$left),
           class = "btn-block btn-primary"
         )),
         column(6, actionButton(
           "chooseRight",
-          label = vehicle_name(pair$right),
+          label = item_name(pair$right),
           class = "btn-block btn-primary"
         ))
       )
@@ -533,12 +518,12 @@ server <- function(input, output, session) {
     if(judging_method == "slider") {
       tagList(
         fluidRow(
-          column(3, p(vehicle_name(pair$left), class = "slider_left"), style = "display: flex"),
+          column(3, p(item_name(pair$left), class = "slider_left"), style = "display: flex"),
           column(6, sliderInput("choice_slider", "",
                                 min = -10, max = 10, value = 0, ticks = FALSE, width = "100%")
           ),
           #column(6, tags$input(id = "choice_slider", type = "range", min = "-10", max = "10", class = "cj_slider")),
-          column(3, p(vehicle_name(pair$right), class = "slider_right"))
+          column(3, p(item_name(pair$right), class = "slider_right"))
         ),
         fluidRow(
           column(4, offset = 4, p(actionButton("submit_slider", "Submit decision", class = "btn-primary"), style = "text-align: center;"))
@@ -557,7 +542,8 @@ server <- function(input, output, session) {
   })
   
   output$judging_progress <- renderPrint({
-    pc <- round((pair$pair_num -1) / 100 * 100)
+    # TODO - replace the hard-coded 30
+    pc <- round((pair$pair_num -1) / 30 * 100)
     pc <- min(pc, 100)
     # https://getbootstrap.com/docs/3.4/components/#progress
     div(
@@ -685,7 +671,7 @@ server <- function(input, output, session) {
       row.names = FALSE,
       append = TRUE
     )
-    prolific_completion_url <- "https://app.prolific.co/submissions/complete?cc=64DD2AF9"
+    prolific_completion_url <- "https://app.prolific.co/submissions/complete?cc=XXXXX"
     output$pageContent <- renderUI({
       tagList(
         p("Saved", style = "text-align:center"),
@@ -707,7 +693,7 @@ server <- function(input, output, session) {
   })
   output$summary_table <- renderTable({
     judges %>%
-      select(study_id, judge_id, prolific_id, num_judgements, attention_checks_passed, time_spent_s) %>% 
+      select(study_id, judge_id, num_judgements, attention_checks_passed, time_spent_s) %>% 
       arrange(study_id, -num_judgements)
   })
   
