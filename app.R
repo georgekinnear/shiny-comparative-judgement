@@ -67,75 +67,9 @@ ui <- fluidPage(
   
   tags$head(
     # Custom CSS
+    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
     tags$style(HTML("
-      /* body {padding-top: 50px}  for the boostrap nav */
-      /*ul.nav-pills {margin-top: 5px}*/
-      @media (max-width: 768px) { .navbar-nav {float: left; margin: 5px; } }
-      /*.navbar-nav {float: left; margin: 5px; }*/
-      .navbar-text {float:left; margin-left:15px; }
-      .navbar-right {float:right; margin-right:15px; }
-      div#pageContent { margin-bottom: 2em; }
-      #demographics .shiny-input-container { width: auto; clear: both; }
-      #demographics .shiny-options-group { display: block; float: left; }
-      #demographics .control-label { float: left; width: 12em; text-align: right; margin-right: 1em; }
-      div.item_panel { padding: 1em 2em; border: 1px solid #ccc; box-shadow: 3px 4px 15px 0px #0000002b; overflow: auto;}
-      div.item_content {margin-top: 1em; }
-      #chooseLeft_comment-label, #chooseRight_comment-label { color: #999; font-weight: normal; font-style: italic; margin-top: 1em; }
-/* this is needed so that longer text in the item choice buttons wraps onto new lines */
-.btn { white-space:normal !important; }
-
-#judging_comment-label { color: #999; font-weight: normal; font-style: italic; margin-top: 1em; }
-.comparison-image { width: 100%; }
-.cj_slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 15px;
-  border-radius: 5px;  
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
-}
-
-.cj_slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%; 
-  background: #003399;
-  cursor: pointer;
-}
-
-.cj_slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #003399;
-  cursor: pointer;
-}
-/* hide the shiny slider features we don't want */
-.irs-min, .irs-max, .irs-single, .irs-bar { display:none !important; }
-#choice_slider-label {display:none !important;}
-.slider_left {
-  text-align: left;
-  width: 90%;
-  float: left;
-  border-left: 2px solid black;
-  padding: 1em;
-  background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, rgba(255,255,255,0) 100%);
-}
-.slider_right {
-  text-align: right;
-  width: 90%;
-  float: right;
-  border-right: 2px solid black;
-  padding: 1em;
-  background: linear-gradient(-90deg, rgba(0,0,0,0.1) 0%, rgba(255,255,255,0) 100%);
-}
-
-.design-comment { color: #ccc; font-style: italic;}
+/* custom CSS can go here, but also in the external www/styles.css file */
     "))
   ),
   
