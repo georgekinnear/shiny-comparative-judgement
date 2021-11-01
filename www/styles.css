@@ -71,4 +71,15 @@
   border-radius: 0.5em;
   margin-bottom: 0.5em;
   padding: 1em;
+  cursor: move;
+  cursor: grab;
+}
+.item_to_rank:active {
+  cursor: grabbing;
+}
+.item_to_rank:hover {
+  background: #edf1ff;
+}
+.sortable-chosen {
+  background: #dee6ff;
 }

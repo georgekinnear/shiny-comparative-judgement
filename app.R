@@ -1,6 +1,7 @@
 library(tidyverse)
 library(shiny)
 library(shinyjs)
+library(sortable)
 library(pool)
 library(yaml)
 library(DT)
@@ -75,6 +76,8 @@ ui <- fluidPage(
   
   # Placeholder for page content - the server will update this as needed
   uiOutput("pageContent")
+  uiOutput("pageContent"),
+  uiOutput("debugging")
 )
 
 
@@ -465,6 +468,53 @@ server <- function(input, output, session) {
   pairs <- tibble()
   
   observeEvent(input$startComparing, {
+  # 
+  #  Demo of the sortable interface
+  # 
+  observeEvent(input$startComparing_DEMO, {
+    tuple <- make_tuple()
+    print(tuple)
+    
+    output$pageContent <- renderUI({
+      tagList(
+        h3("Ranking"),
+        p(tuple %>% paste0(collapse = ", ")),
+        # rank_list(
+        #   text = "You can drag, drop and re-order these items:",
+        #   labels = tuple,
+        #   input_id = "ranking"
+        # ),
+        div(id = "items_to_be_ranked",
+          div(class = "item_to_rank", id = "ranking1", `data-rank-id` = tuple[1], item_name(tuple[1])),
+          div(class = "item_to_rank", id = "ranking2", `data-rank-id` = tuple[2], item_name(tuple[2])),
+          div(class = "item_to_rank", id = "ranking3", `data-rank-id` = tuple[3], item_name(tuple[3])),
+          div(class = "item_to_rank", id = "ranking4", `data-rank-id` = tuple[4], item_name(tuple[4])),
+          div(class = "item_to_rank", id = "ranking5", `data-rank-id` = tuple[5], item_name(tuple[5]))
+        ),
+        sortable_js(
+          css_id = "items_to_be_ranked",
+          options = sortable_options(
+            onSort = sortable_js_capture_input(input_id = "ranked_items")
+          )
+        ),
+        fluidRow(
+          column(4, offset = 4, p(actionButton("submit_ranking", "Submit decision", class = "btn-primary"), style = "text-align: center;"))
+        )
+      )
+    })
+  })
+  
+  observeEvent(input$submit_ranking, {
+    print(input$ranked_items)
+    output$pageContent <- renderUI({
+      tagList(
+        h3("Result"),
+        p(input$ranked_items %>% paste0(collapse = ", "))
+      )
+    })
+  })
+  
+  observeEvent(input$startComparing, { # TODO - delete the _REAL to make this function as normal
     
     # TODO - instead of hard-coded 30, get it to work using assigned_study[["judgements_per_judge"]]
     pairs <<- make_pairs(pairs_to_make = 30) %>% 
