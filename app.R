@@ -156,33 +156,18 @@ server <- function(input, output, session) {
     
     if (isTruthy(query[['JUDGE']])) {
       
-      judge_code <<- query[['JUDGE']]
+      judge_code <- query[['JUDGE']]
       print(judge_code)
       # Check if this user already exists in the DB: if so, pick up from where they left off
-      session_info <<- pool %>% tbl("judges") %>%
+      session_info <- pool %>% tbl("judges") %>%
         filter(shiny_info == !!judge_code) %>%
         collect() %>%
         arrange(-judge_id) %>%
         slice(1)
       
       if(nrow(session_info) > 0) {
-        # Save information about the judging session to global variables for easy reference
-        judge_id <<- session_info$judge_id
-        assigned_study <<- study_status %>% filter(study == !!session_info$study_id)
-        pages_to_show <<- study_pages[[session_info$study_id]]
-        print(pages_to_show)
-        
-        # User has already consented - find out where they got to, and pick up where they left off
-        current_judge_existing_judgements <- pool %>% tbl("decisions") %>%
-          filter(judge_id == !!session_info$judge_id) %>% 
-          collect()
-        
-        # Take the full list of study_pages and subtract any that have already been completed
-        # TODO - perhaps worry about deleting any superfluous pages, e.g. instructions_cj if there are no more cj judging pages left
-        remaining_pages <<- setdiff(pages_to_show,
-                                  current_judge_existing_judgements %>% select(step) %>% deframe())
-        page_to_show$page <- remaining_pages[[1]]
-        print(page_to_show$page)
+        # Pick up where this user left off
+        resume_session(session_info)
       } else {
         # ID is not recognised
         output$pageContent <- renderUI({
@@ -222,7 +207,27 @@ server <- function(input, output, session) {
       page_to_show$page <- "step0-participant-info"
     }
   })
+  
+  resume_session <- function (session_info) {
+    print("Resume session:")
+    # Save information about the judging session to global variables for easy reference
+    judge_id <<- session_info$judge_id
+    assigned_study <<- study_status %>% filter(study == !!session_info$study_id)
+    pages_to_show <<- study_pages[[session_info$study_id]]
+    print(pages_to_show)
     
+    # User has already consented - find out where they got to, and pick up where they left off
+    current_judge_existing_judgements <- pool %>% tbl("decisions") %>%
+      filter(judge_id == !!session_info$judge_id) %>% 
+      collect()
+    
+    # Take the full list of study_pages and subtract any that have already been completed
+    # TODO - perhaps worry about deleting any superfluous pages, e.g. instructions_cj if there are no more cj judging pages left
+    remaining_pages <<- setdiff(pages_to_show,
+                                current_judge_existing_judgements %>% select(step) %>% deframe())
+    page_to_show$page <- remaining_pages[[1]]
+    print(page_to_show$page)
+  }
 
 
   #
