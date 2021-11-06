@@ -1,4 +1,4 @@
-## Comparative jdugement: Informed Consent Form
+## Comparative judgement: Informed Consent Form
 
 Please read the participant information sheet and save a copy for your reference:
 

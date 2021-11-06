@@ -26,9 +26,26 @@ onStop(function() {
 #   tbl("studies") %>% 
 #   collect()
 studies <- tibble::tribble(
-  ~study,                                                                        ~judging_prompt, ~judging_method, ~target_judges, ~judgements_per_judge,
-  "regular_cj",                                      "Which is the better item?",        "binary",            20L,                  30L,
-  "chained_cj",                                      "Which is the better item?",        "binary",            20L,                  30L,
+  ~study,    ~judging_prompt,             ~target_judges,
+  "cj_rank", "Which is the better item?", 20L,
+  "rank_cj", "Which is the better item?", 20L,
+)
+
+study_pages <- list(
+  "cj_rank" = c("instructions_cj",
+                paste0("cj", c(1:15)),
+                "instructions_rank",
+                paste0("rank", c(1:5)),
+                "evaluation",
+                "thanks"
+              ),
+  "rank_cj" = c("instructions_rank",
+                paste0("rank", c(1:5)),
+                "instructions_cj",
+                paste0("cj", c(1:15)),
+                "evaluation",
+                "thanks"
+  )
 )
 
 scripts <- read_yaml("items-to-be-judged.yml") %>%
@@ -38,17 +55,6 @@ scripts <- read_yaml("items-to-be-judged.yml") %>%
   rename_with(~ str_replace(., "-", "_")) %>%
   rename(markdown = html)
 
-# add item for the attention check
-scripts <- scripts %>% 
-  add_row(
-    item_num = 0,
-    item_name = "attention_check",
-    markdown = "This is an attention check, please pick this item"
-  ) %>% 
-  mutate(html = purrr::map(markdown, ~ markdown::markdownToHTML(
-    text = .,
-    fragment.only = TRUE
-  )))
 
 assign_to_study <- function() {
   print(study_status %>% mutate(judge_slots = target_judges - num_judges))
@@ -75,6 +81,7 @@ ui <- fluidPage(
   ),
   
   # Placeholder for page content - the server will update this as needed
+  uiOutput("overall_progress"),
   uiOutput("pageContent"),
   uiOutput("debugging")
 )
@@ -89,20 +96,25 @@ server <- function(input, output, session) {
   
   # These will be global variables within each session
   assigned_study <- NULL
+  pages_to_show <- NULL
   session_info <- NULL
   judge_id <- NULL
   judge_code <- NULL
-  judging_method <- NULL
-  starting_pair <- NULL # this will be set to 1 by default, but when resuming a session it will record where to start
+  current_page <- NULL # TODO - perhaps redundant, use page_to_show reactive?
+  
+  page_to_show <- reactiveValues(
+    page = "step0-participant-info"
+  )
+  
+  # print(session)
   
   #
   # Check on judging progress
   #
   all_existing_judgements <<- pool %>% 
-    tbl("judgements") %>% 
+    tbl("decisions") %>% 
     select(-contains("comment")) %>% 
-    collect() %>% 
-    semi_join(studies, by = "study")
+    collect()
   
   judges <<- pool %>% 
     tbl("judges") %>% 
@@ -115,35 +127,12 @@ server <- function(input, output, session) {
           time_spent_s = sum(time_taken, na.rm = TRUE)/1000
         ),
       by = "judge_id"
-    ) %>% 
-    # left_join(
-    #   pool %>% tbl("comments") %>% 
-    #     collect(),
-    #   by = "judge_id"
-    # ) %>% 
-    left_join(
-      # attention checks
-      all_existing_judgements %>% 
-        group_by(judge_id) %>% 
-        filter(left == 0 | right == 0) %>% 
-        mutate(
-          attention_check_result = case_when(
-            won == 0 ~ TRUE,
-            TRUE ~ FALSE,
-          ),
-        ) %>% 
-        summarise(
-          attention_checks = n(),
-          attention_checks_passed = sum(attention_check_result),
-          attention_checks_failed = sum(!attention_check_result)
-        ),
-      by = "judge_id"
     )
   
   study_progress <<- studies %>% 
     full_join(
       judges %>% 
-        select(judge_id, judge_code, study_id, num_judgements, attention_checks_passed),
+        select(judge_id, shiny_info, study_id, num_judgements),
       by = c("study" = "study_id")
     )
   study_status <<- studies %>% 
@@ -152,6 +141,7 @@ server <- function(input, output, session) {
         group_by(study) %>%
         summarise(
           num_judges = n_distinct(judge_id),
+          # TODO - this is not correct, but it may be hard to do if the numbers differ by study based on study_pages
           num_judges_completed = sum(num_judgements == 100, na.rm = TRUE),
           num_judgements = sum(num_judgements, na.rm = TRUE)
         ),
@@ -161,27 +151,50 @@ server <- function(input, output, session) {
   
   
   observe({
-    query <- parseQueryString(session$clientData$url_search)
+    print("Checking the URL")
+    query <- parseQueryString(isolate(session$clientData$url_search))
     
     if (isTruthy(query[['JUDGE']])) {
+      
       judge_code <<- query[['JUDGE']]
+      print(judge_code)
       # Check if this user already exists in the DB: if so, pick up from where they left off
       session_info <<- pool %>% tbl("judges") %>%
         filter(shiny_info == !!judge_code) %>%
-        arrange(-judge_id) %>%
         collect() %>%
+        arrange(-judge_id) %>%
         slice(1)
       
       if(nrow(session_info) > 0) {
-        # User has already consented - find out how many judgements they completed, and pick up where they left off
-        num_existing_judgements <- pool %>% tbl("judgements") %>%
+        # Save information about the judging session to global variables for easy reference
+        judge_id <<- session_info$judge_id
+        assigned_study <<- study_status %>% filter(study == !!session_info$study_id)
+        pages_to_show <<- study_pages[[session_info$study_id]]
+        print(pages_to_show)
+        
+        # User has already consented - find out where they got to, and pick up where they left off
+        current_judge_existing_judgements <- pool %>% tbl("decisions") %>%
           filter(judge_id == !!session_info$judge_id) %>% 
-          collect() %>% 
-          nrow()
-        starting_pair <<- num_existing_judgements + 1
+          collect()
+        
+        # Take the full list of study_pages and subtract any that have already been completed
+        # TODO - perhaps worry about deleting any superfluous pages, e.g. instructions_cj if there are no more cj judging pages left
+        remaining_pages <<- setdiff(pages_to_show,
+                                  current_judge_existing_judgements %>% select(step) %>% deframe())
+        page_to_show$page <- remaining_pages[[1]]
+        print(page_to_show$page)
       } else {
-        # ID is not recognised, so proceed as a new user
-        starting_pair <<- 1
+        # ID is not recognised
+        output$pageContent <- renderUI({
+          # TODO - get this to be the link to the survey homepage
+          redirect_to_url <- "LINK GOES HERE"
+          tagList(
+            p("Judge ID not recognised", style = "text-align:center"),
+            p("Please try restarting the survey:", style = "text-align:center"),
+            p(redirect_to_url, style = "text-align:center")
+            #tags$script(paste0('window.location.replace("',redirect_to_url,'");'))
+          )
+        })
       }
     } else if (isTruthy(query[['ADMIN_USER']]=="AdminPassword123")) {
       # admin dashboard
@@ -205,91 +218,129 @@ server <- function(input, output, session) {
         )
       })
     } else {
-      # TODO - make this assign them a code
-      # judge_code <<- "None"
-      # # Quit with a warning
-      # output$pageContent <- renderUI({
-      #   tagList(
-      #     h3("Judge code not found"),
-      #     p("The JUDGE is missing from the URL."),
-      #   )
-      # })
-      starting_pair <<- 1
+      # When there is no JUDGE id in the URL, show the consent form
+      page_to_show$page <- "step0-participant-info"
     }
   })
     
-  #
-  # Page 0 - consent form
-  #
-  output$pageContent <- renderUI({
-    tagList(
-      includeMarkdown("step0-participant-info.md"),
-      fluidRow(
-        column(4, offset = 4, actionButton("consentButton", "I consent", class = "btn-success btn-lg btn-block", icon = icon("check")))
-      )
-    )
-  })
+
 
   #
-  # Page 1 - judging instructions
+  # Participant has consented - send them to their unique URL
   #
   observeEvent(input$consentButton, {
     
-    if(starting_pair > 1) {
-      # They are resuming a previous session; session_info will already have been recreated
-      print(session_info)
-      judge_id <<- session_info$judge_id
-      assigned_study <<- studies %>% filter(study == !!session_info$study_id)
-      judging_method <<- assigned_study[["judging_method"]]
-      print(paste("Returning judge with ID:", judge_id))
-    } else {
-      # They are a new user
-      
-      # Now they have consented, assign them to a condition
-      assigned_study <<- assign_to_study()
-      
-      # Create session_info and synch with the judges table in the database
-      ## 1. Write session info to the database
-      session_info <<- tibble(
-        shiny_info = session$token,
-        shiny_timestamp = as.character(Sys.time()),
-        study_id = assigned_study[["study"]]
-      )
-      dbWriteTable(pool,
-                   "judges",
-                   session_info,
-                   row.names = FALSE,
-                   append = TRUE)
-      
-      ## 2. Update session_info to include the autoincremented judge_id produced by the database
-      session_info <<- pool %>% tbl("judges") %>%
-        filter(shiny_info == !!session_info$shiny_info) %>%
-        arrange(-judge_id) %>%
-        collect() %>%
-        slice(1)
-      
-      ## 3. Pick out the judge_id and judging_method for ease of reference later on
-      judge_id <<- session_info$judge_id
-      judging_method <<- assigned_study[["judging_method"]]
-      print(judge_id)
-      
-    }
+    # Now they have consented, assign them to a condition
+    assigned_study <<- assign_to_study()
     
-    # update the page content
+    # Create session_info and synch with the judges table in the database
+    ## 1. Write session info to the database
+    session_info <<- tibble(
+      shiny_info = session$token,
+      shiny_timestamp = as.character(Sys.time()),
+      study_id = assigned_study[["study"]]
+    )
+    
+    dbWriteTable(pool,
+                 "judges",
+                 session_info,
+                 row.names = FALSE,
+                 append = TRUE)
+    
+    ## 2. Update session_info to include the autoincremented judge_id produced by the database
+    session_info <<- pool %>% tbl("judges") %>%
+      filter(shiny_info == !!session_info$shiny_info) %>%
+      arrange(-judge_id) %>%
+      collect() %>%
+      slice(1)
+    
+    redirect_to_url <- paste0("../?JUDGE=", session_info$shiny_info)
+    
+    print(paste0("Redirecting judge ", session_info$judge_id, " to ", redirect_to_url))
     output$pageContent <- renderUI({
       tagList(
-        h3("Instructions"),
-        markdown::markdownToHTML(text = read_file(paste0("judging-instructions-", judging_method, ".md")),
-                                 fragment.only = TRUE) %>% 
-          str_replace("\\[JUDGING PROMPT\\]", assigned_study[["judging_prompt"]]) %>% HTML() %>% withMathJax(),
-        fluidRow(
-          column(4, offset = 4, actionButton("startComparing", "Start comparing", class = "btn-success btn-lg btn-block", icon = icon("check")))
-        )
+        p("Thank you!", style = "text-align:center"),
+        p("Redirecting to the next step:", style = "text-align:center"),
+        p(redirect_to_url, style = "text-align:center"),
+        tags$script(paste0('window.location.replace("',redirect_to_url,'");'))
       )
     })
+    
   })
   
+  observe({
+    # Step 0: Participant information sheet
+    if (page_to_show$page == "step0-participant-info") {
+      output$pageContent <- renderUI({
+        tagList(
+          includeMarkdown("step0-participant-info.md"),
+          fluidRow(
+            column(4, offset = 4, actionButton("consentButton", "I consent", class = "btn-success btn-lg btn-block", icon = icon("check")))
+          )
+        )
+      })
+    }
+    if (page_to_show$page %in% c("instructions_cj", "instructions_rank")) {
+      output$pageContent <- renderUI({
+        tagList(
+          h3("Instructions"),
+          markdown::markdownToHTML(text = read_file(paste0("PAGE_", page_to_show$page, ".md")),
+                                   fragment.only = TRUE) %>% 
+            str_replace("\\[JUDGING PROMPT\\]", assigned_study[["judging_prompt"]]) %>% HTML() %>% withMathJax(),
+          fluidRow(
+            column(4, offset = 4, actionButton(paste0("completed_", page_to_show$page), "Start comparing", class = "btn-success btn-lg btn-block", icon = icon("check")))
+          )
+        )
+      })
+    }
+    if (str_starts(page_to_show$page, "cj")) {
+      print(paste0("Now showing page", page_to_show$page))
+      pair <- pairs %>% filter(page == page_to_show$page)
+      output$pageContent <- renderUI({
+        tagList(
+          h3(assigned_study[["judging_prompt"]]),
+          fluidRow(
+            column(6, render_item_panel("chooseLeft", pair$left)),
+            column(6, render_item_panel("chooseRight", pair$right))
+          ),
+          fluidRow(
+            column(8, offset = 2, htmlOutput("comments"))
+          )
+        )
+      })
+    }
+    
+  })
   
+  advance_page <- function() {
+    print("Advancing page - current page list is")
+    print(remaining_pages)
+    remaining_pages <<- remaining_pages[-1]
+    print(remaining_pages)
+    print("Moving to page:")
+    print(remaining_pages[[1]])
+    page_to_show$page <<- remaining_pages[[1]]
+  }
+  
+  observeEvent(input$completed_instructions_cj, {
+    
+    # find out how many pairs are needed by looking at the list of remaining pages
+    cj_pages <- tibble(page = remaining_pages) %>%
+      filter(str_starts(page, "cj")) %>% 
+      mutate(pair_num = row_number())
+    num_pairs_to_make <- cj_pages %>% nrow()
+    # TODO - worry about if this is ever 0?
+    
+    # use the make_cj_pairs function from cj_functions.R to produce suitable pairs in this study
+    pairs <<- make_cj_pairs(pairs_to_make = num_pairs_to_make,
+                            restrict_to_study_id = session_info$study_id) %>% 
+      left_join(cj_pages)
+    print(pairs)
+    print("Judging initialised")
+
+    advance_page()
+  })
+
   #
   # Judging
   #
@@ -349,43 +400,24 @@ server <- function(input, output, session) {
     })
   })
   
-  observeEvent(input$startComparing, { # TODO - delete the _REAL to make this function as normal
-    
-    # TODO - instead of hard-coded 30, get it to work using assigned_study[["judgements_per_judge"]]
-    pairs <<- make_pairs(pairs_to_make = 30) %>% 
-      mutate(pair_num = row_number())
-    print(pairs)
-    pair$pairs_available <- nrow(pairs)
-  
-    first_pair = pairs %>% filter(pair_num == starting_pair)
-    pair$pair_num <- first_pair$pair_num
-    pair$left <- first_pair$left
-    pair$right <- first_pair$right
-
-    # print(pair)
-    # print("OK")
-
-    # update the page content
-    output$pageContent <- renderUI({
-      tagList(
-        htmlOutput("judging_progress"),
-        h3(assigned_study[["judging_prompt"]]),
-        fluidRow(
-          column(12, htmlOutput("binary"))
-        ),
-        fluidRow(
-          column(12, htmlOutput("slider"))
-        ),
-        fluidRow(
-          column(8, offset = 2, htmlOutput("comments"))
-        )
+  render_item_panel <- function(button_id, item_id) {
+    tagList(
+      div(class = "item_panel",
+          fluidRow(
+            actionButton(button_id, "Choose this one", class = "btn-block btn-primary")
+          ),
+          div(class = "item_content", display_item(item_id))
       )
-    })
-    
-    pair$start_time = Sys.time()
-    print("Judging initialised")
-    # print(pair)
-  })
+    )
+  }
+  display_item <- function(item_id) {
+    the_item <- scripts %>% filter(item_num == item_id)
+    if(str_length(the_item$html %>% as.character()) > 0) {
+      return(the_item$html %>% as.character() %>% HTML() %>% withMathJax())
+    } else {
+      return(img(src = the_item$img_src, class = "comparison-image"))
+    }
+  }
   
   item_name <- function(item_id) {
     scripts %>% filter(item_num == item_id) %>% pull(markdown) %>% as.character() %>% HTML() %>% withMathJax()
@@ -397,49 +429,6 @@ server <- function(input, output, session) {
     }
   })
   
-  output$binary <- renderUI({
-    if(judging_method == "binary") {
-      fluidRow(
-        column(6, actionButton(
-          "chooseLeft",
-          label = item_name(pair$left),
-          class = "btn-block btn-primary"
-        )),
-        column(6, actionButton(
-          "chooseRight",
-          label = item_name(pair$right),
-          class = "btn-block btn-primary"
-        ))
-      )
-    }
-  })
-  
-  output$slider <- renderUI({
-    if(judging_method == "slider") {
-      tagList(
-        fluidRow(
-          column(3, p(item_name(pair$left), class = "slider_left"), style = "display: flex"),
-          column(6, sliderInput("choice_slider", "",
-                                min = -10, max = 10, value = 0, ticks = FALSE, width = "100%")
-          ),
-          #column(6, tags$input(id = "choice_slider", type = "range", min = "-10", max = "10", class = "cj_slider")),
-          column(3, p(item_name(pair$right), class = "slider_right"))
-        ),
-        fluidRow(
-          column(4, offset = 4, p(actionButton("submit_slider", "Submit decision", class = "btn-primary"), style = "text-align: center;"))
-        )
-      )
-    }
-  })
-  observe({
-    if (is.null(input$choice_slider) || input$choice_slider == "0") {
-      shinyjs::disable("submit_slider")
-      shinyjs::html("submit_slider", html = "Please move the slider to indicate the strength of your decision")
-    } else {
-      shinyjs::enable("submit_slider")
-      shinyjs::html("submit_slider", html = "Submit decision")
-    }
-  })
   
   output$judging_progress <- renderPrint({
     # TODO - replace the hard-coded 30

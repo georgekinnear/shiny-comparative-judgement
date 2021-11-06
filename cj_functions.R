@@ -1,14 +1,28 @@
-make_pairs <- function(pairs_to_make = 20) {
+make_cj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
   
   # 1. Gather data on which judgements have been made already in this study group
   
   # all comparisons from this study
   judgement_data <- pool %>% 
-    tbl("judgements") %>% 
-    filter(study == !!session_info$study_id) %>% 
+    tbl("decisions") %>% 
     select(-contains("comment")) %>% 
     collect() %>% 
-    mutate(across(c("left", "right"), as.integer))
+    filter(str_starts(step, "cj")) %>% 
+    separate(decision, into = c("pair_shown", "winner_loser"), sep = " -> ") %>% 
+    separate(pair_shown, into = c("left", "right"), sep = ",") %>% 
+    separate(winner_loser, into = c("won", "lost"), sep = ",") %>% 
+    mutate(across(c("left", "right", "won", "lost"), as.integer))
+  
+  if(length(restrict_to_study_id) > 0) {
+    judgement_data <- judgement_data %>%
+      left_join(
+        pool %>% tbl("judges") %>% 
+          select(judge_id, study_id) %>% 
+          collect(),
+        by = "judge_id"
+      ) %>% 
+      filter(study_id == !!restrict_to_study_id)
+  }
   
   # count the number of comparisons for each pair
   pairs_judged <- judgement_data %>%
@@ -66,21 +80,6 @@ make_pairs <- function(pairs_to_make = 20) {
            select(left, right) %>%
            mutate(pair_num = row_number(), .before = 1)
   )
-}
-next_pair = function(old_pair_num) {
-  
-  # move on to the next pair
-  pair_to_return = old_pair_num + 1
-  
-  # if we've reached the end, add 20 more pairs to the list
-  if(pair_to_return > nrow(pairs)) {
-    pairs <<- pairs %>% bind_rows(make_pairs(pairs_to_make = 20) %>% mutate(pair_num = pair_num + old_pair_num))
-    pair$pairs_available <- nrow(pairs)
-    # print(pairs)
-  }
-  pairs %>% 
-    filter(pair_num == pair_to_return) %>%
-    head(1)
 }
 
 make_tuple <- function() {
