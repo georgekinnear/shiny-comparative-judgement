@@ -106,8 +106,6 @@ server <- function(input, output, session) {
     page = "step0-participant-info"
   )
   
-  # print(session)
-  
   #
   # Check on judging progress
   #
@@ -149,17 +147,22 @@ server <- function(input, output, session) {
     ) %>% 
     mutate(across(starts_with("num_"), ~replace_na(.x, 0L)))
   
-  
   observe({
-    print("Checking the URL")
-    query <- parseQueryString(isolate(session$clientData$url_search))
+    print("DEBUG: Checking the URL")
+    query <- parseQueryString(session$clientData$url_search)
     
     if (isTruthy(query[['JUDGE']])) {
       
-      judge_code <- query[['JUDGE']]
+      if(isTruthy(judge_code) && query[['JUDGE']] == judge_code) {
+        # this is the same judge, so nothing need be done
+        print("DEBUG: Continuing judge, page reload")
+        return()
+      }
+      
+      judge_code <<- query[['JUDGE']]
       print(judge_code)
       # Check if this user already exists in the DB: if so, pick up from where they left off
-      session_info <- pool %>% tbl("judges") %>%
+      session_info <<- pool %>% tbl("judges") %>%
         filter(shiny_info == !!judge_code) %>%
         collect() %>%
         arrange(-judge_id) %>%
@@ -167,7 +170,25 @@ server <- function(input, output, session) {
       
       if(nrow(session_info) > 0) {
         # Pick up where this user left off
-        resume_session(session_info)
+        
+        # Save information about the judging session to global variables for easy reference
+        judge_id <<- session_info$judge_id
+        assigned_study <<- study_status %>% filter(study == !!session_info$study_id)
+        pages_to_show <<- study_pages[[session_info$study_id]]
+        print(pages_to_show)
+        
+        # User has already consented - find out where they got to, and pick up where they left off
+        current_judge_existing_judgements <- pool %>% tbl("decisions") %>%
+          filter(judge_id == !!session_info$judge_id) %>% 
+          collect()
+        
+        # Take the full list of study_pages and subtract any that have already been completed
+        # TODO - perhaps worry about deleting any superfluous pages, e.g. instructions_cj if there are no more cj judging pages left
+        remaining_pages <<- setdiff(pages_to_show,
+                                   current_judge_existing_judgements %>% select(step) %>% deframe())
+        page_to_show$page <- remaining_pages[[1]]
+        page_to_show$remaining_pages <- remaining_pages
+        print(page_to_show$page)
       } else {
         # ID is not recognised
         output$pageContent <- renderUI({
@@ -204,31 +225,10 @@ server <- function(input, output, session) {
       })
     } else {
       # When there is no JUDGE id in the URL, show the consent form
-      page_to_show$page <- "step0-participant-info"
+      # This is the default page_to_show anyway, as defined above:
+      # page_to_show$page <- "step0-participant-info"
     }
   })
-  
-  resume_session <- function (session_info) {
-    print("Resume session:")
-    # Save information about the judging session to global variables for easy reference
-    judge_id <<- session_info$judge_id
-    assigned_study <<- study_status %>% filter(study == !!session_info$study_id)
-    pages_to_show <<- study_pages[[session_info$study_id]]
-    print(pages_to_show)
-    
-    # User has already consented - find out where they got to, and pick up where they left off
-    current_judge_existing_judgements <- pool %>% tbl("decisions") %>%
-      filter(judge_id == !!session_info$judge_id) %>% 
-      collect()
-    
-    # Take the full list of study_pages and subtract any that have already been completed
-    # TODO - perhaps worry about deleting any superfluous pages, e.g. instructions_cj if there are no more cj judging pages left
-    remaining_pages <<- setdiff(pages_to_show,
-                                current_judge_existing_judgements %>% select(step) %>% deframe())
-    page_to_show$page <- remaining_pages[[1]]
-    print(page_to_show$page)
-  }
-
 
   #
   # Participant has consented - send them to their unique URL
@@ -273,6 +273,32 @@ server <- function(input, output, session) {
     
   })
   
+  # Helper function to move the user to the next page
+  advance_page <- function() {
+    remaining_pages <<- remaining_pages[-1]
+    print("Moving to page:")
+    print(remaining_pages[[1]])
+    page_to_show$page <<- remaining_pages[[1]]
+    page_to_show$remaining_pages <<- remaining_pages
+  }
+  
+  elapsed_time <- function() {
+    start_time <- page_to_show$start_time
+    current_time <- Sys.time()
+    return( as.integer((current_time - start_time) * 1000) )
+  }
+  
+  # Box for comments used across all judging pages 
+  output$comments <- renderUI({
+    if(pair$pair_num > 0) {
+      textAreaInput("judging_comment", label = "Comments (optional)", width = "100%", height = "4em")
+    }
+  })
+  
+  
+  #
+  # Information pages
+  #
   observe({
     # Step 0: Participant information sheet
     if (page_to_show$page == "step0-participant-info") {
@@ -285,6 +311,7 @@ server <- function(input, output, session) {
         )
       })
     }
+    # Instruction pages
     if (page_to_show$page %in% c("instructions_cj", "instructions_rank")) {
       output$pageContent <- renderUI({
         tagList(
@@ -298,9 +325,70 @@ server <- function(input, output, session) {
         )
       })
     }
+  })
+    
+  #
+  # Final survey page
+  #
+  observe({
+    if (page_to_show$page == "evaluation") {
+      output$pageContent <- renderUI({
+        tagList(
+          h3("Your opinions"),
+          markdown::markdownToHTML(text = read_file(paste0("PAGE_", page_to_show$page, ".md")),
+                                   fragment.only = TRUE) %>% HTML() %>% withMathJax(),
+          fluidRow(
+            column(4, offset = 4, actionButton(paste0("completed_", page_to_show$page), "Submit", class = "btn-success btn-lg btn-block", icon = icon("check")))
+          )
+        )
+      })
+    }
+    if (page_to_show$page == "thanks") {
+      output$pageContent <- renderUI({
+        tagList(
+          h3("Thank you!"),
+          markdown::markdownToHTML(text = read_file(paste0("PAGE_", page_to_show$page, ".md")),
+                                   fragment.only = TRUE) %>% HTML() %>% withMathJax()
+        )
+      })
+    }
+  })
+  observeEvent(input$completed_evaluation, {
+    # TODO - save their answers to the database
+    advance_page()
+  })
+  
+  
+  #
+  # Traditional comparative judgement
+  #
+  
+  # Once the judge has read the instructions, generate the full list of pairs to be judged
+  observeEvent(input$completed_instructions_cj, {
+    
+    # find out how many pairs are needed by looking at the list of remaining pages
+    cj_pages <- tibble(page = remaining_pages) %>%
+      filter(str_starts(page, "cj")) %>% 
+      mutate(pair_num = row_number())
+    num_pairs_to_make <- cj_pages %>% nrow()
+    # TODO - worry about if this is ever 0?
+    
+    # use the make_cj_pairs function from cj_functions.R to produce suitable pairs in this study
+    pairs_to_judge <<- make_cj_pairs(pairs_to_make = num_pairs_to_make,
+                                     restrict_to_study_id = session_info$study_id) %>% 
+      left_join(cj_pages, by = "pair_num")
+    print(pairs_to_judge)
+    print("Judging initialised")
+    
+    advance_page()
+  })
+  
+  # Set up the page for paired comparison
+  observe({
     if (str_starts(page_to_show$page, "cj")) {
-      print(paste0("Now showing page", page_to_show$page))
-      pair <- pairs %>% filter(page == page_to_show$page)
+      page_to_show$start_time <- Sys.time()
+      print(paste0("Now showing page: ", page_to_show$page))
+      pair <<- pairs_to_judge %>% filter(page == page_to_show$page)
       output$pageContent <- renderUI({
         tagList(
           h3(assigned_study[["judging_prompt"]]),
@@ -314,95 +402,6 @@ server <- function(input, output, session) {
         )
       })
     }
-    
-  })
-  
-  advance_page <- function() {
-    print("Advancing page - current page list is")
-    print(remaining_pages)
-    remaining_pages <<- remaining_pages[-1]
-    print(remaining_pages)
-    print("Moving to page:")
-    print(remaining_pages[[1]])
-    page_to_show$page <<- remaining_pages[[1]]
-  }
-  
-  observeEvent(input$completed_instructions_cj, {
-    
-    # find out how many pairs are needed by looking at the list of remaining pages
-    cj_pages <- tibble(page = remaining_pages) %>%
-      filter(str_starts(page, "cj")) %>% 
-      mutate(pair_num = row_number())
-    num_pairs_to_make <- cj_pages %>% nrow()
-    # TODO - worry about if this is ever 0?
-    
-    # use the make_cj_pairs function from cj_functions.R to produce suitable pairs in this study
-    pairs <<- make_cj_pairs(pairs_to_make = num_pairs_to_make,
-                            restrict_to_study_id = session_info$study_id) %>% 
-      left_join(cj_pages)
-    print(pairs)
-    print("Judging initialised")
-
-    advance_page()
-  })
-
-  #
-  # Judging
-  #
-  
-  # initialise empty data structures, to be used when judging begins
-  pair <- reactiveValues(
-    pair_num = 0,
-    pairs_available = 0,
-    left = 1000,
-    right = 1001
-  )
-  pairs <- tibble()
-  
-  # 
-  #  Demo of the sortable interface
-  # 
-  observeEvent(input$startComparing_DEMO, {
-    tuple <- make_tuple()
-    print(tuple)
-    
-    output$pageContent <- renderUI({
-      tagList(
-        h3("Ranking"),
-        p(tuple %>% paste0(collapse = ", ")),
-        # rank_list(
-        #   text = "You can drag, drop and re-order these items:",
-        #   labels = tuple,
-        #   input_id = "ranking"
-        # ),
-        div(id = "items_to_be_ranked",
-          div(class = "item_to_rank", id = "ranking1", `data-rank-id` = tuple[1], item_name(tuple[1])),
-          div(class = "item_to_rank", id = "ranking2", `data-rank-id` = tuple[2], item_name(tuple[2])),
-          div(class = "item_to_rank", id = "ranking3", `data-rank-id` = tuple[3], item_name(tuple[3])),
-          div(class = "item_to_rank", id = "ranking4", `data-rank-id` = tuple[4], item_name(tuple[4])),
-          div(class = "item_to_rank", id = "ranking5", `data-rank-id` = tuple[5], item_name(tuple[5]))
-        ),
-        sortable_js(
-          css_id = "items_to_be_ranked",
-          options = sortable_options(
-            onSort = sortable_js_capture_input(input_id = "ranked_items")
-          )
-        ),
-        fluidRow(
-          column(4, offset = 4, p(actionButton("submit_ranking", "Submit decision", class = "btn-primary"), style = "text-align: center;"))
-        )
-      )
-    })
-  })
-  
-  observeEvent(input$submit_ranking, {
-    print(input$ranked_items)
-    output$pageContent <- renderUI({
-      tagList(
-        h3("Result"),
-        p(input$ranked_items %>% paste0(collapse = ", "))
-      )
-    })
   })
   
   render_item_panel <- function(button_id, item_id) {
@@ -411,33 +410,133 @@ server <- function(input, output, session) {
           fluidRow(
             actionButton(button_id, "Choose this one", class = "btn-block btn-primary")
           ),
-          div(class = "item_content", display_item(item_id))
+          div(class = "item_content", item_content(item_id))
       )
     )
   }
-  display_item <- function(item_id) {
+  item_content <- function(item_id) {
     the_item <- scripts %>% filter(item_num == item_id)
-    if(str_length(the_item$html %>% as.character()) > 0) {
-      return(the_item$html %>% as.character() %>% HTML() %>% withMathJax())
+    if(str_length(the_item$markdown %>% as.character()) > 0) {
+      return(the_item$markdown %>% as.character() %>% HTML() %>% withMathJax())
     } else {
       return(img(src = the_item$img_src, class = "comparison-image"))
     }
   }
-  
-  item_name <- function(item_id) {
-    scripts %>% filter(item_num == item_id) %>% pull(markdown) %>% as.character() %>% HTML() %>% withMathJax()
+  record_judgement_binary <- function(pair, winner = "left", loser = "right") {
+    print(paste(pair$left, pair$right, "winner:", winner))
+    time_taken = elapsed_time()
+    
+    winning_item = ifelse(winner == "left", pair$left, pair$right)
+    losing_item = ifelse(loser == "left", pair$left, pair$right)
+    
+    dbWriteTable(
+      pool,
+      "decisions",
+      tibble(
+        judge_id = session_info$judge_id,
+        step = page_to_show$page,
+        decision = str_glue("{pair$left},{pair$right} -> {winning_item},{losing_item}"),
+        time_taken = time_taken,
+        comment = input$judging_comment
+      ),
+      row.names = FALSE,
+      append = TRUE
+    )
   }
-
-  output$comments <- renderUI({
-    if(pair$pair_num > 0) {
-      textAreaInput("judging_comment", label = "Comments (optional)", width = "100%", height = "4em")
-    }
+  observeEvent(input$chooseLeft, {
+    record_judgement_binary(pair, winner = "left", loser = "right")
+    advance_page()
+  })
+  observeEvent(input$chooseRight, {
+    record_judgement_binary(pair, winner = "right", loser = "left")
+    advance_page()
   })
   
   
-  output$judging_progress <- renderPrint({
-    # TODO - replace the hard-coded 30
-    pc <- round((pair$pair_num -1) / 30 * 100)
+  
+  #
+  # Rank ordering
+  #
+  
+  # When the judge has read the instructions, there is nothing to do but send them to the next page
+  observeEvent(input$completed_instructions_rank, {
+    print("Ranking initialised")
+    advance_page()
+  })
+  
+  # Set up the page for rank ordering - this generates a new tuple to rank when the page is loaded
+  observe({
+    if (str_starts(page_to_show$page, "rank")) {
+      print(paste0("Now showing page: ", page_to_show$page))
+      
+      # Generate the tuple to rank
+      items_to_rank <<- make_tuple(restrict_to_study_id = session_info$study_id)
+      print(items_to_rank)
+      
+      # Record the start time for this decision
+      page_to_show$start_time <- Sys.time()
+      
+      output$pageContent <- renderUI({
+        tagList(
+          h3(assigned_study[["judging_prompt"]]),
+          # The "items_to..." id/class values are used to style the items using CSS
+          # The `data-rank-id` is used by sortable_js to keep track of the item id's after the judge has moved them around
+          div(id = "items_to_be_ranked",
+              div(class = "item_to_rank", id = "ranking1", `data-rank-id` = items_to_rank[1], item_content(items_to_rank[1])),
+              div(class = "item_to_rank", id = "ranking2", `data-rank-id` = items_to_rank[2], item_content(items_to_rank[2])),
+              div(class = "item_to_rank", id = "ranking3", `data-rank-id` = items_to_rank[3], item_content(items_to_rank[3])),
+              div(class = "item_to_rank", id = "ranking4", `data-rank-id` = items_to_rank[4], item_content(items_to_rank[4])),
+              div(class = "item_to_rank", id = "ranking5", `data-rank-id` = items_to_rank[5], item_content(items_to_rank[5]))
+          ),
+          sortable_js(
+            css_id = "items_to_be_ranked",
+            options = sortable_options(
+              onSort = sortable_js_capture_input(input_id = "ranked_items")
+            )
+          ),
+          fluidRow(
+            column(8, offset = 2, htmlOutput("comments"))
+          ),
+          fluidRow(
+            column(4, offset = 4, p(actionButton("submit_ranking", "Submit decision", class = "btn-primary"), style = "text-align: center;"))
+          )
+        )
+      })
+    }
+  })
+  
+  observeEvent(input$submit_ranking, {
+    record_judgement_tuple(items_to_rank, input$ranked_items)
+    advance_page()
+  })
+  record_judgement_tuple <- function(items_presented, items_ranked) {
+    time_taken = elapsed_time()
+    
+    dbWriteTable(
+      pool,
+      "decisions",
+      tibble(
+        judge_id = session_info$judge_id,
+        step = page_to_show$page,
+        decision = str_glue("{paste0(items_presented, collapse = ',')} -> {paste0(items_ranked, collapse = ',')}"),
+        time_taken = time_taken,
+        comment = input$judging_comment
+      ),
+      row.names = FALSE,
+      append = TRUE
+    )
+  }
+  
+  
+  
+  
+  output$overall_progress <- renderPrint({
+    num_pages_total <- length(pages_to_show)
+    # remaining_pages includes the current page, so subtract 1 to get the number of subsequent pages
+    num_pages_left <- length(page_to_show$remaining_pages) - 1
+    num_pages_completed <- num_pages_total - num_pages_left
+    
+    pc <- round(num_pages_completed / num_pages_total * 100)
     pc <- min(pc, 100)
     # https://getbootstrap.com/docs/3.4/components/#progress
     div(
@@ -448,84 +547,14 @@ server <- function(input, output, session) {
         `aria-valuenow` = pc,
         `aria-valuemin` = 0,
         `aria-valuemax` = 100,
-        style = str_glue("min-width: 1em; width: {pc}%;"),
-        pair$pair_num - 1
+        style = str_glue("min-width: 1em; width: {pc}%;")
       )
     )
   })
   
-  update_pair <- function() {
-    new_pair <- next_pair(pair$pair_num)
-    # print(new_pair)
-    pair$pair_num <- new_pair$pair_num
-    pair$left <- new_pair$left
-    pair$right <- new_pair$right
-    pair$start_time <- Sys.time()
-  }
   
-  elapsed_time <- function() {
-    start_time <- pair$start_time
-    current_time <- Sys.time()
-    return( as.integer((current_time - start_time) * 1000) )
-  }
   
-  record_judgement_binary <- function(pair, winner = "left", loser = "right") {
-    print(paste(pair$left, pair$right, "winner:", winner))
-    time_taken = elapsed_time()
-    
-    winning_item = ifelse(winner == "left", pair$left, pair$right)
-    losing_item = ifelse(loser == "left", pair$left, pair$right)
-    
-    dbWriteTable(
-      pool,
-      "judgements",
-      tibble(
-        study = session_info$study_id,
-        judge_id = session_info$judge_id,
-        left = pair$left,
-        right = pair$right,
-        won = winning_item,
-        lost = losing_item,
-        time_taken = time_taken,
-        comment = input$judging_comment
-      ),
-      row.names = FALSE,
-      append = TRUE
-    )
-  }
-  record_judgement_slider <- function(pair, score = 0) {
-    print(paste(pair$left, pair$right, "score:", score))
-    time_taken = elapsed_time()
-    
-    dbWriteTable(
-      pool,
-      "judgements",
-      tibble(
-        study = session_info$study_id,
-        judge_id = session_info$judge_id,
-        left = pair$left,
-        right = pair$right,
-        score = score,
-        time_taken = time_taken,
-        comment = input$judging_comment
-      ),
-      row.names = FALSE,
-      append = TRUE
-    )
-  }
-  observeEvent(input$chooseLeft, {
-    record_judgement_binary(pair, winner = "left", loser = "right")
-    update_pair()
-  })
-  observeEvent(input$chooseRight, {
-    record_judgement_binary(pair, winner = "right", loser = "left")
-    update_pair()
-  })
-  observeEvent(input$submit_slider, {
-    record_judgement_slider(pair, score = input$choice_slider)
-    update_pair()
-  })
-  
+
   # Give a message when they reach the required number of comparisons
   # TODO - make this return them to the special Prolific landing page that will mark them as completed
   observe({

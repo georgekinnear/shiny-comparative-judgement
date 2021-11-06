@@ -82,7 +82,7 @@ make_cj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
   )
 }
 
-make_tuple <- function() {
+make_tuple <- function(restrict_to_study_id = NULL) {
   
   # 1. Gather data on which judgements have been made already in this study group
   
@@ -94,9 +94,29 @@ make_tuple <- function() {
     collect() %>% 
     separate_rows(items_presented, sep = ",")
   
+  # all comparisons from this study
+  judgement_data <- pool %>% 
+    tbl("decisions") %>% 
+    select(-contains("comment")) %>% 
+    collect() %>% 
+    filter(str_starts(step, "rank")) %>% 
+    separate(decision, into = c("items_presented", "items_ranked"), sep = " -> ") %>% 
+    separate_rows(items_presented, sep = ",")
+  
+  if(length(restrict_to_study_id) > 0) {
+    judgement_data <- judgement_data %>%
+      left_join(
+        pool %>% tbl("judges") %>% 
+          select(judge_id, study_id) %>% 
+          collect(),
+        by = "judge_id"
+      ) %>% 
+      filter(study_id == !!restrict_to_study_id)
+  }
+  
   # count the number of comparisons for each pair
   pairs_judged <- judgement_data %>% 
-    left_join(judgement_data, by = "ranking_id") %>% 
+    left_join(judgement_data, by = "decision_id") %>% 
     rename(left = items_presented.x, right = items_presented.y) %>% 
     # strip out the spurious self-comparisons
     filter(left != right) %>%
@@ -105,7 +125,7 @@ make_tuple <- function() {
     # put the pairs in order, with item IDs as integers
     mutate(across(c("left", "right"), as.integer)) %>% 
     mutate(pair = paste(sort(c(left, right)), collapse = '_')) %>% 
-    select(pair, ranking_id) %>% 
+    select(pair, decision_id) %>% 
     distinct() %>% 
     group_by(pair) %>% 
     tally() %>% 
