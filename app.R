@@ -531,13 +531,18 @@ server <- function(input, output, session) {
   
   
   output$overall_progress <- renderPrint({
-    num_pages_total <- length(pages_to_show)
-    # remaining_pages includes the current page, so subtract 1 to get the number of subsequent pages
-    num_pages_left <- length(page_to_show$remaining_pages) - 1
-    num_pages_completed <- num_pages_total - num_pages_left
-    
-    pc <- round(num_pages_completed / num_pages_total * 100)
-    pc <- min(pc, 100)
+    if(!isTruthy(pages_to_show)) {
+      pc <- 0
+    } else {
+      num_pages_total <- length(pages_to_show)
+      # remaining_pages includes the current page, so subtract 1 to get the number of subsequent pages
+      num_pages_left <- length(page_to_show$remaining_pages) - 1
+      num_pages_completed <- num_pages_total - num_pages_left
+      
+      pc <- round(num_pages_completed / num_pages_total * 100)
+      pc <- min(pc, 100)
+    }
+
     # https://getbootstrap.com/docs/3.4/components/#progress
     div(
       class = "progress",
