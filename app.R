@@ -25,12 +25,16 @@ onStop(function() {
 # studies <- pool %>% 
 #   tbl("studies") %>% 
 #   collect()
+# TODO - expand this to describe the set of groups that we want in the study
 studies <- tibble::tribble(
   ~study,    ~judging_prompt,             ~target_judges,
   "cj_rank", "Which is the better item?", 20L,
   "rank_cj", "Which is the better item?", 20L,
 )
 
+# Define the pages that each group will be shown in order
+# - for each group, provide a list of strings, where the content of the string
+#   matches the name of a page to show
 study_pages <- list(
   "cj_rank" = c("instructions_cj",
                 paste0("cj", c(1:15)),
@@ -148,13 +152,14 @@ server <- function(input, output, session) {
     mutate(across(starts_with("num_"), ~replace_na(.x, 0L)))
   
   observe({
-    print("DEBUG: Checking the URL")
+    # Check the URL for parameters e.g. ?judge=123
+    # This is used to give each judge a unique URL that they can reload, or return to later
     query <- parseQueryString(session$clientData$url_search)
     
     if (isTruthy(query[['JUDGE']])) {
       
       if(isTruthy(judge_code) && query[['JUDGE']] == judge_code) {
-        # this is the same judge, so nothing need be done
+        # this is the same judge as the current session, so nothing needs to be done
         print("DEBUG: Continuing judge, page reload")
         return()
       }
@@ -335,6 +340,7 @@ server <- function(input, output, session) {
       output$pageContent <- renderUI({
         tagList(
           h3("Your opinions"),
+          # TODO - add input boxes for the survey questions
           markdown::markdownToHTML(text = read_file(paste0("PAGE_", page_to_show$page, ".md")),
                                    fragment.only = TRUE) %>% HTML() %>% withMathJax(),
           fluidRow(
@@ -382,10 +388,11 @@ server <- function(input, output, session) {
     
     advance_page()
   })
+  # TODO - make a copy of this for completed_instructions_ccj
   
   # Set up the page for paired comparison
   observe({
-    if (str_starts(page_to_show$page, "cj")) {
+    if (str_starts(page_to_show$page, "cj") | str_starts(page_to_show$page, "ccj")) {
       page_to_show$start_time <- Sys.time()
       print(paste0("Now showing page: ", page_to_show$page))
       pair <<- pairs_to_judge %>% filter(page == page_to_show$page)

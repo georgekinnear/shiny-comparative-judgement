@@ -1,5 +1,24 @@
 make_cj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
   
+  # TODO!
+  # Essentially a copy of make_cj_pairs
+  
+  # Intended output something like this:
+  # > make_cj_pairs()
+  # # A tibble: 20 x 3
+  # pair_num  left right
+  # <int> <int> <int>
+  # 1        1    15     2
+  # 2        2    11    10
+  # 3        3     4    14
+  # 4        4     9    12
+  
+  # but the right of pair N should become the left of pair N+1
+  
+}
+
+make_cj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
+  
   # 1. Gather data on which judgements have been made already in this study group
   
   # all comparisons from this study
