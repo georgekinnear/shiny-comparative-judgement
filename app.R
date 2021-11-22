@@ -307,12 +307,22 @@ server <- function(input, output, session) {
   observe({
     # Step 0: Participant information sheet
     if (page_to_show$page == "step0-participant-info") {
+      
+      all_scripts_html = scripts %>%
+        mutate(html_out = purrr::map(markdown, ~ markdown::markdownToHTML(
+          text = .,
+          fragment.only = TRUE
+        ))) %>% 
+        mutate(html_out = paste0("<h2>Script ", item_num, "</h2>", html_out))
+      
       output$pageContent <- renderUI({
         tagList(
           includeMarkdown("step0-participant-info.md"),
           fluidRow(
             column(4, offset = 4, actionButton("consentButton", "I consent", class = "btn-success btn-lg btn-block", icon = icon("check")))
-          )
+          ),
+          h1("For debugging purposes, these are the scripts:"),
+          paste(all_scripts_html$html_out, collapse = "") %>% HTML() %>% withMathJax()
         )
       })
     }

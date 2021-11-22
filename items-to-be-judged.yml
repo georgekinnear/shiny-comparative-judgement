@@ -1,179 +1,105 @@
----
 - item-num: 1
-  item-name: Experimental evidence
-  img-src: proofs/proof-1.png
+  item-name: "ID: 56.2 --- score: 2.35"
   html: |
-    \[ 1 = 1 = 1^2 \]
-      \[ 1+3 = 4 = 2^2 \]
-      \[ 1+3+5 = 9 = 3^2 \]
-      \[ 1+3+5+7 = 16 = 4^2 \]
-      \[ 1+3+5+7+9 = 25 = 5^2 \]
-      \[ 1+3+5+7+9+11 = 36 = 6^2 \]
-    \[ \vdots\]
-    \[ 1+3+5+7+\cdots+(2n-1) = n^2.\]
-   
-- item-num: 2
-  item-name: Pictorial I (L-shaped)
-  img-src: proofs/proof-2.png
-  html: |
-    <img src="proofs/fig1.svg" style = "width: 12em" class="center-block">
+    The interval (0,1) contains \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\} \Rightarrow f(n) = 0.a_{11}a_{12}a_{13}\dots
+    0.a_{21}a_{22}a_{23}\dots
+    \vdots\)
+    If we have \(b = 0.b_1b_2B_3\dots\) and every time \(a_{ii} = 5\) make \(b_i = 3\) and \(a_{ii} \neq 5\) make \(b_i = 5, b\) will always be different to \(f(n)\), 
+    \(0.a_{11}a_{12}a_{13} \neq 0.b_1b_2B_3\dots \therefore\) no matter what number \(f(n)\) is there will always be \(b \neq f(n) \in (0,1)\) so (0,1) is uncountable. 
     
-    \[ 1+3+5+7+\cdots+(2n-1) = n^2.\]
+- item-num: 2
+  item-name: "ID: 81.1 --- score: 2.08"
+  html: |
+    (0,1) is infinite. Suppose (0,1) is denumerable, there is a function \(f:\mathbb{N} \rightarrow (0,1): f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5}\). We don't use decimals with an infinite string of 9's i.e. \(\forall n \in \mathbb{N}, f(n) =  0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5}\). Let \(b =  0.b_1b_2b_3b_4b_5\). If \(b\) differs from \(f(n)\) in the \(n^{th}\) decimal place then (0,1) is not denumerable. 
 
 - item-num: 3
-  item-name: Pictorial II (Pyramid)
-  img-src: proofs/proof-3.png
+  item-name: "ID: 14.2 --- score: 1.77"
   html: |
-    <img src="proofs/fig2.svg" style = "width: 12em" class="center-block">
-    
-    \[ 1+3+5+7+\cdots+(2n-1) = \frac{1}{4}(2n)^2 = n^2.\]
+    \((0,1) \subseteq \left\{\dfrac{1}{2^k}:k \in \mathbb{N}\right\}\); both are infinite. Suppose (0,1) is denumerable. \(f: \mathbb{N} \rightarrow (0,1)\) that is one-to-one and onto (0,1). \(\forall n \in \mathbb{N}\), \(f(n) = 0.a_{n1}a_{n2}a_{n3} \dots\) where there is no \(k\) s.t. \(\forall i > k\), \(a_{ni} = 9\). Now \(b = 0.b_1b_2b_3b_4 \dots\) where \(b_i = 5\) if \(a_{ii} \neq 5\). \(b_i = 3\) if \(a_{ii} = 5\). We know that \(b \in (0,1)\) however \(b\) differs from \(f(n)\) in the \(n^{th}\) decimal place. So \(b \neq f(n)\) for \(n \in \mathbb{N}\). And \(b\) does not belong in the range \(f\), \(f\) is not onto \((0,1) \textit{\#}\)
 
 - item-num: 4
-  item-name: Arithmetic Progression
-  img-src: proofs/proof-4.png
+  item-name: "ID: 68.1 --- score: 1.57"
   html: |
-    \[1+3+5+7+\cdots+(2n-1)\]
-    is an arithmetic progression with difference \(2\) and \(n\) terms. The first term \(a_1=1\), and the last term \(a_n=2n-1\), and the sum of an AP is \( \frac{n}{2}(a_1+a_n)\), which in this case is \(\frac{n}{2}(1+2n-1)=n^2\).
+    The numbers between \(0, 1\) is infinite. The function \(f: \mathbb{N} \rightarrow (0,1)\) takes all natural numbers into the interval (0,1). Examples \(f(1) = 0.a_{11}a_{12}a_{13}a_{14}\). \(f(2) = 0.a_{21}a_{22}a_{23}a_{24}\) etc. The decimal representation of infinite 0's and infinite 9's are the same as \(0.9\dot{9} = 0.1\dot{0}\). Our statement is the interval (0,1) is denumerable. \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) is a subset of the intervals of (0,1). We are saying there isn't a value \(> k\). For \(a_n\) that value \(= 9\). Now we introduce \(b\) so that the decimal place value will be as if the corresponding \(a\) value is not 5 and 3 if \(a\) = 5, \(b\) differs from \(f(n)\). So not in range therefore \(f\) not in (0,1) which contradicts. 
 
 - item-num: 5
-  item-name: Reversed list
-  img-src: proofs/proof-5.png
+  item-name: "ID: 112.1 --- score: 1.40"
   html: |
-    Write the terms twice, with the second list reversed.
-    \[
-    \begin{array}{cccccccccc}
-    1    & + & 3    & + & 5    & + \cdots + & 2n-3 & + & 2n-1 \\\\
-    2n-1 & + & 2n-3 & + & 2n-5 & + \cdots + &    3 & + & 1
-    \end{array}
-    \]
-    Each column has total \(2n\) and there are \(n\) columns.  So the total is \(2n^2\) proving \(\sum_{k=1}^n (2k-1) = n^2\).
-
+    Show infinite subset in interval. Assume denumerable. Then function 1 to 1 onto (0,1). \(f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4} \dots\) represent so no \(k\) s.t. \(i > k a_{ni} = 9\). Define \(b = 0.b_1b_2b_3b_4 \dots\) where \(b_i = 5\) if \(a_{ii} \neq 5 b_i = 3\) if \(a_{ii} = 5\). Deduce \(b \neq f(n)\) for any \(n \in \mathbb{N}\) which means \(b\) doesn't belong to \(f\). \(\therefore f\) not onto \((0,1) \Rightarrow (0,1)\) isn't denumerable by contradiction. 
 
 - item-num: 6
-  item-name: Telescope
-  img-src: proofs/proof-6.png
+  item-name: "ID: 26.2 --- score: 1.10"
   html: |
-    Notice that \( 2k-1 = k^2 - (k-1)^2\), so that adding up we have
-    \[ \sum_{k=1}^n (2k-1) = \sum_{k=1}^n k^2 - (k-1)^2.\]
-    However in
-    \[ \sum_{k=1}^n k^2 - (k-1)^2 = (1^2-0^2)+(2^2-1^2)+(3^2-2^2)+\cdots+(n^2-(n-1)^2)\]
-    all terms cancel except two, one from the first term and one from the last, i.e. \(-0^2+n^2\), leaving \(n^2\).
-
+    To prove (0,1) is uncountable, first suppose (0,1) \underline{is} denumerable. Then we can form a function \(f: \mathbb{N} \rightarrow (0,1)\) which is one-to-one and onto (0,1) and show that there are decimals that differ in the \(n\)th decimal place, so (0,1) is uncountable. 
 
 - item-num: 7
-  item-name: Backwards reasoning
-  img-src: proofs/proof-7.png
+  item-name: "ID: 44.2 --- score: 0.95"
   html: |
-    The Fundamental Theorem of Finite Differences says that \(S_n = \sum_{k=1}^n a_k\) if and only if \(a_n = S_{n}-S_{n-1}\).
-    
-    Consider \(S_n=n^2\) then \(S_n-S_{n-1}=n^2-(n-1)^2=2n-1\).
-    Hence  \(\sum_{k=1}^n (2k-1) = n^2\).
-
+    We assume the interval is countable an that we would therefore have a bijection \(f\) onto the interval. Some elements would have 2 decimal expansions so we removes those with infinite 9's to make each element unique. Turn every expansion into a combination of 3's and 5's and prove this isn't in \(f\), but is in the interval. Therefore no \(f\), so interval uncountable. 
 
 - item-num: 8
-  item-name: Rearranging I
-  img-src: proofs/proof-8.png
+  item-name: "ID: 30.1 --- score: 0.65"
   html: |
-    We use the standard results \(\sum_{k=1}^n k = \frac{n(n+1)}{2}\) and \(\sum_{k=1}^n 1 = n\) and rearrange
-    \[ \sum_{k=1}^n (2k-1) = 2\sum_{k=1}^n k - \sum_{k=1}^n 1 = 2\frac{n(n+1)}{2}-n = n^2.\]
-
+    (0,1) is infinite, prove by infinite subsets. Using contradiction, we can show (0,1) is not denumerable because one number always has a different n\)^{th}\) decimal place to that of the functions. 
 
 - item-num: 9
-  item-name: Rearranging II
-  img-src: proofs/proof-9.png
+  item-name: "ID: 102.2 --- score: 0.51"
   html: |
-    We use the standard result \(\sum_{k=1}^n k = \frac{n(n+1)}{2}\) and rearrange
-    \[ \sum_{k=1}^n \underbrace{2k-1}_{\mbox{odd}} =
-    (\underbrace{1+2+3+\cdots+2n}_{\mbox{all}}) - (\underbrace{2+4+6+\cdots +2n}_{\mbox{even}})
-    \]
-    \[= (1+2+3+\cdots+2n) - 2(1+2+3+\cdots +n)\]
-    \[ \sum_{k=1}^n (2k-1) = \sum_{k=1}^{2n} k -  2\sum_{k=1}^{n} k\]
-    \[ = \frac{2n(2n+1)}{2} - 2\frac{n(n+1)}{2} = n^2.\]
-
-
+    \(f(n)\) is an decimal in the set (0,1), which is not infinite despite confusing an infinite subset. By swapping 5's and 3's in \(a_{ni}\), you produce a number \(b_{ni}\) which is not in the range of \(f\). 
+    
 - item-num: 10
-  item-name: Induction
-  img-src: proofs/proof-10.png
+  item-name: "ID: 42.2 --- score: 0.41"
   html: |
-    Let \(P(n)\) be the statement \(\sum_{k=1}^n (2k-1) = n^2\).
-    
-    Since \(\sum_{k=1}^1 (2k-1) = 1 = 1^2\) we see \(P(1)\) is true.
-    
-    Assume \(P(n)\) is true then
-    \[ \sum_{k=1}^{n+1} (2k-1) = \sum_{k=1}^n (2k-1) + (2(n+1)-1) = n^2 + 2n +1 = (n+1)^2.\]
-    Hence \(P(n+1)\) is true.
-    
-    Since \(P(1)\) is true and \(P(n+1)\) follows from \(P(n)\) we conclude that \(P(n)\) is true for all \(n\) by the principle of mathematical induction.
-
+    It is a proof by contradiction with \(f: \mathbb{N} \rightarrow\) (0,1) which is one-to-one on (0,1). The decimal expansions have infinite strings of numbers. \(b\) differs from \(f(n)\) at some points. \(b\) doesn't belong to range \(f\).   
 
 - item-num: 11
-  item-name: Contradiction
-  img-src: proofs/proof-11.png
+  item-name: "ID: 17.1 --- score: 0.23"
   html: |
-    To prove \(\forall\, n\in\mathbb{N}: \sum_{k=1}^n (2k-1) = n^2\),
-    assume, for a contradiction, that \(\exists\, n\in\mathbb{N}: \sum_{k=1}^n (2k-1) \neq n^2\).
-    Let \(n^*\) be the smallest such example.  Note, \(n^*>1\) since \((2\times 1)-1 = 1^2\).
-    
-    If \(\sum_{k=1}^{n^*} (2k-1) > {n^*}^2\) then
-    \[ \sum_{k=1}^{n^*} (2k-1) = 2n^*-1 + \sum_{k=1}^{n^*-1} (2k-1) > {n^*}^2\]
-    and so
-    \[ \sum_{k=1}^{n^*-1} (2k-1) > {n^*}^2 - 2n^*+1 = (n^*-1)^2.\]
-    This proves \(\sum_{k=1}^{n^*-1} (2k-1) \neq (n^*-1)^2\), which contradicts the minimality of \(n^*\).  The case \(\sum_{k=1}^{n^*} (2k-1) < {n^*}^2\) leads to an identical contradiction.
+    \(\dfrac{1}{2^k}\) is a subset of (0,1) (where \(k \in \mathbb{N}\)). It is infinite as \(\dfrac{1}{2^k}\) remains within (0,1) as \(k \rightarrow \infty\) and so (0,1) is infinite. There is a bijection \(f: \mathbb{N} \rightarrow\) (0,1). 
+    Proof by contradiction. Shows (0,1) is not denumerable \(b\) does not satisfy the bijection for all n \(\in \mathbb{N} \Rightarrow\) is uncountable. 
 
 - item-num: 12
-  item-name: Linear system
-  img-src: proofs/proof-12.png
+  item-name: "ID: 19.1 --- score: -0.05"
   html: |
-    Since the sum is always an integer and
-    \(S_n=\sum_{k=1}^{n} (2k-1) \leq n(2n-1)\) the growth of \(S_n\) is quadratic in \(n\).  We therefore assume
-    \[ \sum_{k=1}^{n} (2k-1) = an^2 + bn +c\quad \forall\, n\in \mathbb{N}.\]
-    Since this formula holds for all \(n\) it must hold for \(n=1,2,3\).  Hence
-    \[
-    \begin{array}{lcll}
-     1    & = & a+b+c,   & (n=1)    \\\\
-     1+3  & = & 4a+2b+c, & (n=2)  \\\\
-     1+3+5& = & 9a+3b+c, & (n=3)\\\\
-    \end{array}
-    \]
-    This is a linear system in \(a,b,c\) which we set up as
-    \[ \left( \begin{array}{ccc} 1 & 1 & 1 \\\\ 4 & 2 & 1 \\\\ 9 & 3 & 1 \end{array} \right) \left(\begin{array}{c} a \\\\ b \\\\ c \end{array}\right) = \left(\begin{array}{c} 1 \\\\ 4 \\\\ 9\end{array}\right).\]
-    The matrix clearly has non-zero determinant, so the system has a unique solution.
-    This solution is (exercise to check) \(a=1\), \(b=c=0\).  Hence \(\sum_{k=1}^n (2k-1) = n^2\).
-
+    The interval (0,1) includes an infinite subset \(\left\{\dfrac{1}{2^k}: k \in N \right\}\) . However because there can be no one to one map from \(f: \mathbb{N} \rightarrow\) (0,1) due to unique decimals strings for each \(f(n)\) then the open interval is uncountable. 
 
 - item-num: 13
-  item-name: Undetermined coefficients
-  img-src: proofs/proof-13.png
+  item-name: "ID: 18.1 --- score: -0.42"
   html: |
-    Assume \(1+3+5+7+\cdots + (2n-1) = A+Bn+Cn^2+Dn^3+En^4+\cdots\).
-    Then
-    \[ \begin{align*} &1+3+5+7+\cdots + (2n-1)+(2(n+1)-1) \\\\ &= A+B(n+1)+C(n+1)^2+D(n+1)^3+E(n+1)^4+\cdots\end{align*}\]
-    Subtracting
-    \[ 2n+1=B+C(2n+1)+D(3n^2+3n+1)+E(4n^3+6n^2+4n+1) + \cdots\]
-    Equating powers of \(n^2,n^3,\ldots\) on both sides we see \(D=E=...=0\).
-    \[ 2n+1=B+C(2n+1).\]
-    Hence \(B=0\) and \(C=1\), from which \(A=0\) and so \(\sum_{k=1}^n (2k-1) = n^2\).
-
+    The proof aims to to prove that (0,1) is uncountable. It achieves this by assuming that it isn't, then finding an example which is contradicting, hence proving uncountability by contradiction.  
 
 - item-num: 14
-  item-name: Induction (b)
-  img-src: proofs/proof-14.png
+  item-name: "ID: 59.2 --- score: -0.65"
   html: |
-    Consider the conjecture \(\sum_{k=1}^n (2k-1) = n^2\).
-    First note \(\sum_{k=1}^1 (2k-1) = 1 = 1^2\).
-    Now,
-    \[ \sum_{k=1}^{n+1} (2k-1) = \sum_{k=1}^n (2k-1) + (2(n+1)-1) = n^2 + 2n +1 = (n+1)^2.\]
-    Hence \(\sum_{k=1}^n (2k-1) = n^2\) by induction.
-
+    \(\dfrac{1}{2^k}\) is in between 0 and 1 \(\forall k \in \mathbb{N}\) and as we know \(\left(\dfrac{1}{2^k}\right)\) has infinite terms, so must the interval (0,1). Suppose you can count for 0 \(\rightarrow\) 1 then there would be [illegible] decimals as seen. Then got not idea. 
 
 - item-num: 15
-  item-name: Pictorial II (b)
-  img-src: proofs/proof-15.png
+  item-name: "ID: 78.2 --- score: -0.85"
   html: |
-    In the picture below, the stepped triangle at the bottom has \(1+3+5+\cdots+(2n-1)\) dots.  
-    
-    <img src="proofs/fig2.svg" style = "width: 12em" class="center-block">
-    
-    Four copies of this triangle can be fitted together to give a square where the side length is \((2n-1)+1\) so the number of dots is \((2n)^2\). Hence  
-    \[ 1+3+5+7+\cdots+(2n-1) = \frac{1}{4}(2n)^2 = n^2.\]
+    The interval (0,1) includes the subset \(\left\{\dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) which is infinite. Suppose (0,1) is denumerable. Then there is a function \(f: \mathbb{N} \rightarrow\) (0,1).
 
+- item-num: 16
+  item-name: "ID: 23.2 --- score: -1.08"
+  html: |
+    Using the idea that the set (0,1) is infinite and proof by contradiction to show that \(b\) differs from \(f\) for every nth term. 
+
+- item-num: 17
+  item-name: "ID: 38.1 --- score: -1.41"
+  html: |
+    This proof represents al countable numbers in the subset and uses these numbers which map 'one to many' for \(k\), which have infinite decimal places in the subset by connecting it one to one. \(a_i\) has a set value for \(b_i\) = 3 but when \(b_i\) = 5 \(a_i \neq\) 5 so \(a_i\) can take any other value meaning the solution is only unique for \(b_i\) = 3 not when \(a_i \neq\) 5. 
+
+- item-num: 18
+  item-name: "ID: 21.1 --- score: -1.87"
+  html: |
+    The interval (0,1) is infinite as it includes subsets that are infinite e.g \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\). 0 can be represented by an infinite string of 0's and 1 can have the decimal representation of a infinite string of 9's. 
+
+- item-num: 19
+  item-name: "ID: 48.1 --- score: -2.43"
+  html: |
+    \(\left[ 0,1 \right]\) \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) (0,1) is infinite. \(f: \mathbb{N}\rightarrow \) (0,1) is one-to-one onto (0,1). 
+    
+- item-num: 20
+  item-name: "ID: 10.2 --- score: -4.50"
+  html: |
+    BLANK
+ 

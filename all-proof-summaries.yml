@@ -1,0 +1,738 @@
+---
+- item-num: 1
+  item-name: "ID: 33.1 --- score: 2.78"
+  html: |
+    (0,1) is infinite. Suppose its denumerable. there exists a one-to-one function \( (f) \) onto \( (0,1) \). For any image of \( f \), \( f(n)=0.a_{n_1}a_{n_2},a_{n_3}\dots) \), we can construct a number \(b \in (0,1)\) where \(b \neq f(n)\), therefore \(f\) isn't onto (0,1), which contradicts our assumption. 
+   
+- item-num: 2
+  item-name: "ID: 92.1 --- score: 2.59"
+  html: |
+    Assume that \( f: \N \to (0,1) \). There is no representation for strings of 9s and 0s. There is a number \( b = 0.b_1b_2b_3\dots b_n\), \(b_i = 5\) iff (\a_{ii} \neq 5\), \(b_i = 3\) iff \(a_{ii} = 5\). The \(n^{\text{th}}\) term of \(b\) differs from the \(n^{\text{th}}\) term of \(f(n)\). \(\therefore b \neq f(n)\), \(b\) is not in the range of the function. \(f\) is not onto (0,1) \(\#\).
+
+- item-num: 3
+  item-name: "ID: 59.1 --- score: 2.54"
+  html: |
+    Interval (0,1) is infinite as contains infinite subset \(\{\frac{1}{2k} : k \in \N\}\). Suppose (0,1) is denumerable. Some elements of (0,1) have 2 different decimal representations so we don't use one's with infinite 9's. no \(k\) s.t. \(\forall i < k, a_{n_i} = 9\). Let \(b = 0.b_1b_2b_3b_4b_5\dots\) where \(b_i = 5\) if \(a_{ii} \neq 5\) and \(b_i = 3\) if \(a_{ii} = 5\) so \(b \in (0,1)\) and has unique decimal representation. \(\therefore \forall n \in \N, b \neq f(n)\) so \(f\) is not onto (0,1) \#. (0,1) is not denumerable. 
+
+- item-num: 4
+  item-name: "ID: 94.1 --- score: 2.53"
+  html: |
+    It is a proof  by contradiction.
+    Only use of \(\infty\) string of 0's m decimal representation for ad \(f(n)\) as there are \(\infty\) possibilities.
+    \(b\) is another number made up of 3's and 5's and for \(n\) it will be different to \(f(n)\) after \(n\) decimal places so \(b\) is not in \(f(n)\) and so \(b\) is not in the range but \(b\) is in [illegible] \((0,1) \therefore\) contradicts so (0,1) is uncountable. 
+
+- item-num: 5
+  item-name: "ID: 35.1 --- score: 2.39"
+  html: |
+    \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) has an infinite number of terms in the interval (0,1) . If (0,1) is denumerable, there is a function that can map a number, \(n\), onto all elements of (0,1). We use only one of the two decimal representations for simplicity as the answer is still the same, choosing decimals that end in 0s rather than 9s to infinity. For ever unique decimal, (\a\), there is a decimal in which 5s are replaced by 3s and all other numbers replaced by 5. \(b\) is 0 so \(b \in (0,1)\). \(b \neq f(n)\) due to the change in digits so does not map to every element in (0,1). Proof by contradiction  \(\square\)
+
+
+- item-num: 6
+  item-name: "ID: 60.1 --- score: 2.39"
+  html: |
+    \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) - infinite \(\Rightarrow (0,1)\) is infinite. Suppose, by contradiction, (0,1) is denumerable. \(f: \mathbb{N} \rightarrow (0,1)\) one to one. \(f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5} \dots\) Two different decimal representations \((0.999999 \dots\)  and \(.00000\dots)\) - Do not use \(.99999\dots\) so \(\forall n \in \mathbb{N}\), represent \(f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5} \dots\) so that no \(k\) s.t. \(\forall i > k, a_{ni} = 9\). Let \(b = 0.b_1b_2b_3b_4b_5 \dots\) where \(b_i = 5\) is \(a_i \neq \) and \(b_i = 3\) is \(a_{ii} = 5\). \(b \in (0,1)\) and has a unique decimal representation and \( b \neq f(n)\) for any \(n \in \mathbb{N} \Rightarrow b\) doesn't belong to the range of \(f \Rightarrow f\) is not onto (0,1) \textit{\#}. |(\therefore (0,1)\) is not denumerable.
+
+- item-num: 7
+  item-name: "ID: 56.2 --- score: 2.35"
+  html: |
+    The interval (0,1) contains \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\} \Rightarrow f(n) = 0.a_{11}a_{12}a_{13}\dots
+0.a_{21}a_{22}a_{23}\dots
+\vdots\)
+If we have \(b = 0.b_1b_2B_3\dots\) and every time \(a_{ii} = 5\) make \(b_i = 3\) and \(a_{ii} \neq 5\) make \(b_i = 5, b\) will always be different to \(f(n)\), 
+\(0.a_{11}a_{12}a_{13} \neq 0.b_1b_2B_3\dots \therefore\) no matter what number \(f(n)\) is there will always be \(b \neq f(n) \in (0,1)\) so (0,1) is uncountable. 
+    
+- item-num: 8
+  item-name: "ID: 63.1 --- score: 2.30"
+  html: |
+    Interval (0,1) is infinite. \(f: \mathbb{N} \rightarrow (0,1)\) one to one, onto (0,1). decimal representations ones with infinite number of 9s. One with infinite number of 0s. We do not use infinite string of 9s. \(0.a_{n1}a_{n2}a_{n3}a_{ni}\) no such \(k\) for all \(i > k, a_{ni} = 9\). \(b = 0.b_{n1}b_{n2}b_{n3}\) \(b \in (0,1)\) where \(b_i = 5\) is \(b_{ii} \neq 5\) and \(b_i = 3\) if \(b_{ii} = 5\). \(b\) differs from \(f(n)\) in \(n^{th}\) decimal place. \(b\) doesn't belong to range of \(f\) \textit{\#} (0,1) not denumerable.
+    
+- item-num: 9
+  item-name: "ID: 114.1 --- score: 2.26"
+  html: |
+    Interval includes infinite subset \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\). 
+    Suppose, by contraction, that interval is countable \(f: \mathbb{N} \rightarrow (0,1). f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}\dots\).
+    We don't use 9's e.g. 0.8749999 \(\dots\) we use 0.875. Take \(b = 0.b_1b_2b_3 \dots b_i = 5\) if \(a_{ii} \neq 5 \& b_i = 3\) if \(a_{ii} = 5\). Then \(b \in (0,1)\) but \(b \neq f(n) \textit{\#}\).
+
+    
+- item-num: 10
+  item-name: "ID: 37.1 --- score: 2.26"
+  html: |
+    The proof shows (0,1) is uncountable via contradiction. If (0,1) was denumerable \(f: \mathbb{N} \rightarrow (0,1)\) would be 1 to 1. you ignore representation with recurring 9's at the end. \(b\) is another decimal \(\in (0,1)\) and due to the conditions given \(\forall n \in \mathbb{N}\) it will differ from any of the values in the original (\(0.a_1a_2a_3\dots a_n\)) meaning it isn't in \((0,1) (f)\) %unsure if I should demonstrate that the (f) is raised?
+    which is incorrect, therefore (0,1) isn't countable
+
+- item-num: 11
+  item-name: "ID: 67.2 --- score: 2.22"
+  html: |
+    (0,1) contains the subset \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) we know it's infinite. 
+    If (0,1) was countable, there would be a function \(f(n)\) that produced all the values in (0,1). However, for any value in range of any given \(f(n)\) we can produce another that isn't in the range, i.e. \(f(n)\) is not onto (0,1) i.e. (0,1) is not countable. 
+
+- item-num: 12
+  item-name: "ID: 72.1 --- score: 2.11"
+  html: |
+    The interval includes the subset \(\left\{ \dfrac{1}{2k}:k\in \mathbb{N}\right\}\) so (0,1) is infinite. Let \(f(n) = 0.a_{n1}a_{n2}a_{n3} \dots\). Let \( b = 0. b_1b_2b_3 \dots\) where \(b_i = 5\) if \(a_{ii} \neq 5\) and \(b_i = 3\) if \(a_{ii} = 5\).
+    We know \(b\) has a unique decimal representation. However for each \(n \in \mathbb{N}\), \(b\) differs from \(f(n)\) in \(n^{th}\) decimal place. Thus \(b \neq f(n)\) for any \(n \in \mathbb{N}\), so \(f\) is not within (0,1). Contradiction, so (0,1) is uncountable. 
+ 
+- item-num: 13
+  item-name: "ID: 74.2 --- score: 2.08"
+  html: |
+    If we represent \(f(n)\) as \(0.a_{n1}a_{n2}a_{n3} \dots\) and choose a \(b \in (0,1)\) s.t. \(b_i = 5\) in all places other than where \(a_{ii} = 5\), the then form a number that is not represented by \(f(n)\) but is in the interval, so it cannot be countable. 
+
+- item-num: 14
+  item-name: "ID: 81.1 --- score: 2.08"
+  html: |
+    (0,1) is infinite. Suppose (0,1) is denumerable, there is a function \(f:\mathbb{N} \rightarrow (0,1): f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5}\). We don't use decimals with an infinite string of 9's i.e. \(\forall n \in \mathbb{N}, f(n) =  0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5}\). Let \(b =  0.b_1b_2b_3b_4b_5\). If \(b\) differs from \(f(n)\) in the \(n^{th}\) decimal place then (0,1) is not denumerable. 
+
+- item-num: 15
+  item-name: "ID: 118.1 --- score: 2.03"
+  html: |
+    First it is assumed that there is a function that maps \(n \in \mathbb{N}\) to the open interval (0,1). Those expansions with recurring 9s are also discounted as there are 2 representations of those numbers. Then a number (\(b\)) is constructed that is in the form \(0.555 \dots\) unless at the \(n^{th}\) point after the decimal point in \(a\), there is a 5. Then a 3 is written in the \(n^{th}\) point in \(b\). We know that \(b\) is  unique decimal expansion because \(a\) has no recurring 9s. We know that \(b \neq a\) for any \(n \in \mathbb{N}\) so \(f(n)\) doesn't map any \(n\) to \(b\), which contradicts the assumption.
+    There is a function (\(\sim\)) which maps \(n\) to (0,1) for \(a = 0.a_1a_2a_3 \dots\) any \(a\) with recurring 9s are discounted. Then \(b\) is constructed such that b = \(0.b_1b_2b_3\) where \(b_n = 5\) if \(a_n \neq 5\) and \(b_n = 3\) is \(a_n = 5\). as \(b\)s representations is unique, and \(b \neq a\), \(f(n) = a\) doesnt map any value \(n\) to \(b\), which is a contradiction. 
+
+- item-num: 16
+  item-name: "ID: 28.1 --- score: 2.03"
+  html: |
+    The interval (0,1) is infinite as its subset \(\left\{ \dfrac{1}{2^k}: n \in \mathbb{N}\right\}\) is infinite. \(f(n)\) does not have an infinite string of 9s. \(b = (0,1)\) and \(b_i = 5\) is \(a_{ii} \neq 5\) and \(b_i = 3\) if \(a_{ii} = 5\). So, \(b \neq f(n)\) and has a unique decimal representation. \(f\) not onto \((0,1) \textit{\#}. (0,1)\) not denumerable. 
+
+- item-num: 17
+  item-name: "ID: 105.1 --- score: 1.96"
+  html: |
+    Suppose (0,1) is denumerable. Then there is a function \(f: N \rightarrow (0,1)\). the image of \(f\) in the form (\f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5} \dots\) Now, we represent (\f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5} \dots\) in a way such that no (\k\) for all (\i > k\), and (\= 9\). Let (\b\) be (\b = 0.b_1b_2b_3b_4b_5 \dots\) where (\b_i = 5\) if (\a_{ii} \neq 5\) and (\b_i = 3\) if (\a_{ii} = 5\). Then (\b\) has a unique decimal representation. But (\\forall n \in \mathbb{N}\), (\b \neq f(n)\) in the (\n^{th}\) decimal place. Thus (\b \notin\) range (\f\). (\f: N \not\rightarrow (0,1) \textit{\#}\). So (0,1) denumerable.
+
+- item-num: 18
+  item-name: "ID: 117.1 --- score: 1.95"
+  html: |
+    The interval (0,1) is infinite. If it is denumerable there is a function where all the elements can be written in their decimal form. However there will always been another number in (0,1) which differs from the function, so (0,1) is not denumerable. 
+
+- item-num: 19
+  item-name: "ID: 55.1 --- score: 1.82"
+  html: |
+    participant wrote their answer as a list of bulletpoints but I just wrote it out as the others did. Can change if preferred, but figured the content is the importnat thing. 
+    (0,1) is infinite because it contains an infinite subset. Suppose by contradiction (0,1) is countable and define (\f: \mathbb{N} \rightarrow (0,1)\) (bijective) (\f(n) = 0.a_{n1}a_{n2}\dots\). Construct (\b \in (0,1)\) such a way that (\b\) has a unique decimal representation and in such a way that every digit of (\b\) is different from the corresponding digit of (\f(n)\). (\b \notin Range(f) \Rightarrow b \notin (0,1)\) (because (\f\) is bijective) (\\textit{\#}\)
+
+- item-num: 20
+  item-name: "ID: 29.1 --- score: 1.78"
+  html: |
+    Suppose the infinite interval (0,1) is denumerable, then (\\mathbb{N}\) is mapped one-to-one onto it. Because the number (\b\) is (\n\) numbers along (\f(n)\), the two are different and therefore map different things so that it is not one-to-one on (0,1), contradicting the assumption. 
+
+- item-num: 21
+  item-name: "ID: 14.2 --- score: 1.77"
+  html: |
+    (\(0,1) \subseteq \left\{\dfrac{1}{2^k}:k \in \mathbb{N}\right\}\); both are infinite. Suppose (0,1) is denumerable. (\f: \mathbb{N} \rightarrow (0,1)\) that is one-to-one and onto (0,1). (\\forall n \in \mathbb{N}\), (\f(n) = 0.a_{n1}a_{n2}a_{n3} \dots\) where there is no (\k\) s.t. (\\forall i > k\), (\a_{ni} = 9\). Now (\b = 0.b_1b_2b_3b_4 \dots\) where (\b_i = 5\) if (\a_{ii} \neq 5\). (\b_i = 3\) if (\a_{ii} = 5\). We know that (\b \in (0,1)\) however (\b\) differs from (\f(n)\) in the (\n^{th}\) decimal place. So (\b \neq f(n)\) for (\n \in \mathbb{N}\). And (\b\) does not belong in the range (\f\), (\f\) is not onto (\(0,1) \textit{\#}\)
+
+- item-num: 22
+  item-name: "ID: 82.1 --- score: 1.68"
+  html: |
+    (0,1) is infinite. Suppose (0,1) is denumerable so there's a function (\f: \mathbb{N} \rightarrow (0,1)\) that's one-to-one and onto (0,1). Some elements of (0,1) have different decimal representations so letting (\b = 0.b_1b_2b_3b_4b_5\) will mean (\b\) has a unique decimal representation. Thus (\b \neq f(n)\), which contradicts our assumptions. 
+
+- item-num: 23
+  item-name: "ID: 22.1 --- score: 1.66"
+  html: |
+    The proof assumes that (0,1) is countable and then shows that a contradiction occurs. IT does this by showing that a unique element in the range, (\b\), cannot be formed as a function of natural numbers. 
+
+- item-num: 24
+  item-name: "ID: 111.2 --- score: 1.64"
+  html: |
+    (0,1) includes an infinite subset so (0,1) is infinite too. We can't use decimal representations using infinite 9s. Let (\b = 0.b_1b_2b_3b_4b_5 \dots\) where (\b_i = 5\) if (\a_{ii} \neq 5\), (\b_i = 3\) if (\a_{ii} = 5\) %unsure how to present this - participant used different lines, almost like piecewisee function would be presented. \(b \neq f(n)\) as (\b\) differs from (\f(n)\) in (\n\)th decimal place. Contradiction. So (0,1) is denumerable. 
+
+- item-num: 25
+  item-name: "ID: 75.2 --- score: 1.63"
+  html: |
+    (0,1) contains an infinite subset so is infinite. Assume denumerable. (\f: \mathbb{N} \rightarrow (0,1)\) represent this in a way that there is not infinite string of 9's. Create (\b\) with unique decimal representation. (\b \neq f(n)\) for any (\n\) so (0,1) is denumerable. 
+
+- item-num: 26
+  item-name: "ID: 56.1 --- score: 1.60"
+  html: |
+    (0,1) contains an infinite subset so is infinite. Choosing a function mapping (\\mathbb{N}\) to (0,1) does not give all decimals as you can choose a decimal with a different digit in each position. 
+
+- item-num: 27
+  item-name: "ID: 61.2 --- score: 1.59"
+  html: |
+    Indirect. Assume (\N \sim (0,1)\) 1-1 onto %slightly illegible
+    s.t. (\Df = \mathbb{N}, Rf = (0,1)\). If we exclude decimals ending with (\\infty\) 0s by the axiom of completeness (decimals in (0,1)) = real numbers in (0,1) is a bijection. (\0,a_{11}a_{22} \dots\). (\0,a_{21}a_{22} \vdots\) (\b_i = 0, b_1b_2 \dots\). (\b_n = 5 iff a_{n,n} \neq 5. b_n = 3 iff a_{n,n} = 5. b_n \in (0,1)\) and (\b_n \notin Rf. N \not \sim (0,1)\) [illegible] (\\Rightarrow N \sim (0,1)\) [numbers?]. Contradiction. (\\square\)
+
+- item-num: 28
+  item-name: "ID: 68.1 --- score: 1.57"
+  html: |
+    The numbers between (\0, 1\) is infinite. The function (\f: \mathbb{N} \rightarrow (0,1)\) takes all natural numbers into the interval (0,1). Examples (\f(1) = 0.a_{11}a_{12}a_{13}a_{14}\). (\f(2) = 0.a_{21}a_{22}a_{23}a_{24}\) etc. The decimal representation of infinite 0's and infinite 9's are the same as (\0.9\dot{9} = 0.1\dot{0}\). Our statement is the interval (0,1) is denumerable. (\\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) is a subset of the intervals of (0,1). We are saying there isn't a value (\> k\). For (\a_n\) that value (\= 9\). Now we introduce (\b\) so that the decimal place value will be as if the corresponding (\a\) value is not 5 and 3 if (\a\) = 5, (\b\) differs from (\f(n)\). So not in range therefore (\f\) not in (0,1) which contradicts. 
+
+- item-num: 29
+  item-name: "ID: 107.1 --- score: 1.55"
+  html: |
+    Between (0,1) there are infinitely any numbers which includes the subset (\\dfrac{1}{2^k}: k \in \mathbb{N}\). If (0,1) is denumerable then function (\f: N \rightarrow (0,1)\). Image of (\f\) is written for [each?] (\n \in \mathbb{N}\). (\f(1) = 0.a_{11}a_{12}a_{13}\dots\) . 
+\(f(2) = 0.a_{21}a_{22}\dots\) . However can't use representations with 9's or 0's as infinite string. (\b = 0.b_1b_2b_3b_4b_5 \dots\) let (\b_i\) = 5 when (\a_{ii} \neq\) 5. (\b_i\) = 3 when (\a_{ii}\) = 5. Then (\b\) has a unique number and does not belong to Range. 
+
+- item-num: 30
+  item-name: "ID: 61.1 --- score: 1.53"
+  html: |
+    There are infinite values in the set (0,1). Prove by contradiction. Write all numbers in (0,1) in such a way that they do not end in recurring 9's. A number (\b\) is shown not to fit in the range (\f\) meaning (\f\) does not contain all elements of (0,1), contradicting the assumption that (0,1) is countable. 
+
+- item-num: 31
+  item-name: "ID: 119.1 --- score: 1.52"
+  html: |
+    The interval (0,1) is proven to be uncountable by assuming there is a function that shows every possible value within the interval. This is then contradicted by the showing of another element within the set that shows that the one to one function does not provide every value within the interval, therefore it is uncountable. 
+
+- item-num: 32
+  item-name: "ID: 9.2 --- score: 1.42"
+  html: |
+    The proof is saying that all numbers in between (0,1) can be given by a (\f(n)\) when (\n \in \mathbb{N}\) and as every number can be written as a decimal expansion (\0.a_1a_2a_3 \dots\). But the contradiction is saying that we can swap a certain number in the sequence i.e. 3 for 5 or every non 5 number for 3 and this new number will be in the range (0,1) but the (\f(n)\), the (\n \in \mathbb{N}\) to give the first value of (\0.a_1a_2a_3 \dots\) will not be true for the second, edited value. So the new value (\\neq f(n) \therefore\) this is a contradiction. 
+
+- item-num: 33
+  item-name: "ID: 47.2 --- score: 1.42"
+  html: |
+    Assume the interval is countable and so has a one-to-one function. If (\b = 0.b_1b_2\dotsb_n\) where (\b_i = 5\) if (\a_{ii} \neq 5\) and (\b_i = 3\) if (\a_{ii} = 5\) then there is always a new term to add to the set. This means the function is not one-to-one so is a contradiction therefore uncountable.
+
+- item-num: 34
+  item-name: "ID: 83.1 --- score: 1.42"
+  html: |
+    The interval (0,1) includes the subset (\\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) which is infinite. Thus (0,1) is infinite. (\f(1) = 0.a_{11}a_{12}a_{13}a_{14}\dots\). (\f(2) = 0.a_{21}a_{22}a_{23}\dots \vdots f(n) = 0.a_{n1}a_{n2}a_{n3}\dots\). Now let (\b\) the number (\b = 0.b_1b_2b_3b_4b_5 \dots\) . (\\forall n \in \mathbb{N} b\) differs from (\f(n)\) in the (\n\)-th decimal place. Thus (\b \neq b(n) \forall n \in \mathbb{N}\). Thus (\f \notin (0,1)\). Therefore (0,1) is not denumerable. 
+
+- item-num: 35
+  item-name: "ID: 112.1 --- score: 1.40"
+  html: |
+    Show infinite subset in interval. Assume denumerable. Then function 1 to 1 onto (0,1). (\f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4} \dots\) represent so no (\k\) s.t. (\i > k a_{ni} = 9\). Define (\b = 0.b_1b_2b_3b_4 \dots\) where (\b_i = 5\) if (\a_{ii} \neq 5 b_i = 3\) if (\a_{ii} = 5\). Deduce (\b \neq f(n)\) for any (\n \in \mathbb{N}\) which means (\b\) doesn't belong to (\f\). (\\therefore f\) not onto (\(0,1) \Rightarrow (0,1)\) isn't denumerable by contradiction. 
+
+- item-num: 36
+  item-name: "ID: 73.2 --- score: 1.35"
+  html: |
+    (\(0,1]\) [unclear, maybe contains?] (\\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) - infinite. Suppose (0,1) denumerable. (\f: \mathbb{N} \rightarrow (0,1)\) one-to-one. (\f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5} \dots\) don't use infinite 9s. No (\k\) s.t. (\i>k\), (\a_{ni} = 9\). Let (\b = 0.b_1b_2b_3b_4b_5 \dots\). (\b_i = 5\) if (\a_i \neq 5 b_i = 3\) if (\a_{ii} = 5\). (\b \in (0,1)\). (\b\) [unclear] to (\f(n)\). (\b \neq f(n)\) for (\\forall n \in \mathbb{N}\). (\\textit{\#} \therefore (0,1)\) is not denumerable.
+
+- item-num: 37
+  item-name: "ID: 93.1 --- score: 1.33"
+  html: |
+    We use proof by contradiction be assuming (0,1) is countable. The proof then defines a way to map the natural numbers onto the real numbers in the interval (0,1). We then use b to demonstrate a contradiction and complete the proof. 
+
+- item-num: 38
+  item-name: "ID: 97.1 --- score: 1.19"
+  html: |
+    If we can count all unique decimals in (0,1). There's a function that lists `all' of them. But we can make a number in (0,1) that isn't `caught' by the function. So we have a contradiction. 
+
+- item-num: 39
+  item-name: "ID: 86.1 --- score: 1.17"
+  html: |
+    The proof start by showing the interval is infinite. Then assuming (0,1) is denumerable they can write (\f: \mathbb{N} \rightarrow (0,1)\) which is what they are trying to contradict. Then they assign part of the interval to each natural numbers from the function as is required by the assumption using variables. Then they clear up any confusion with an infinite string of 9s and zero's by saying they won't use numbers that at some point start repeating 9 forever. Now they suppose a number `b' within the interval (0,1) that changes depending on the arbitrary numbers already shown. Because this number changes with every (\f(n)\) if can't be part of the function which contradicts the assumption
+
+- item-num: 40
+  item-name: "ID: 120.1 --- score: 1.16"
+  html: |
+    Take an infinite string of numbers of the form (\0.a_{1n}a_{2n}a_{3n}a_{4n} \dots\). Pair them one to one with the natural numbers 1 (\\rightarrow 0.a_{11}a_{21}a_{31}a_{41}\). (\n \rightarrow 0.a_{1n}a_{2n}a_{3n}a_{4n}\). For every unique string of numbers, create the number (\b\) such that (\b_i = 5\) if (\a_{ii} \neq 5\) and (\b_i = 3\) if (\a_{ii} = 3\). This must create a new number that is not in the infinite list so (0,1) has uncountably infinite numbers. 
+
+- item-num: 41
+  item-name: "ID: 73.1 --- score: 1.12"
+  html: |
+    %I haven't included diagram of interval
+    (0,1) uncountable? (\\dfrac{1}{2^n} \rightarrow \infty \forall n \in \mathbb{N}\). So infinite numbers in (0,1). Assume a map (\f(n) \rightarrow (0,1) \forall n \in \mathbb{N}\). Unique decimal (\b \in (0,1)\). (\b \neq f(n) \forall n \in \mathbb{N}\). (\f(n)\) is not the map we want, it does not exist. (0,1) the numbers are uncountable. %have not included drawing of a tree
+
+- item-num: 42
+  item-name: "ID: 26.2 --- score: 1.10"
+  html: |
+    To prove (0,1) is uncountable, first suppose (0,1) \underline{is} denumerable. Then we can form a function (\f: \mathbb{N} \rightarrow (0,1)\) which is one-to-one and onto (0,1) and show that there are decimals that differ in the (\n\)th decimal place, so (0,1) is uncountable. 
+
+- item-num: 43
+  item-name: "ID: 76.2 --- score: 1.08"
+  html: |
+    (0,1) is uncountable. There exists (\f: \mathbb{N} \rightarrow (0,1)\). (\f(1) = 0.a_{11}a_{12}a_{13}\dots\). (\f(2) = 0.a_{21}a_{22}a_{23}\dots \vdots f(n) = 0.a_{n1}a_{n2}a_{n3}\dots\) and (\b = 0.b_1b_2b_3\dots\) if (\a_{ii} = 5\), (\b_i = 3\) and (\a_{ii} \neq 5\), (\b_i = 5\). So (\b \neq f(n)\) so (\b\) doesn't belong in the range of (\f\), and (0,1) is uncountable. 
+
+- item-num: 44
+  item-name: "ID: 34.1 --- score: 1.07"
+  html: |
+    The interval (0,1) includes the subset (\\left(\dfrac{1}{2^k}\right)\) which is infinite, meaning (0,1) is infinite. To show (0,1) is uncountable, look at the decimal representations of the images of (\f\), but ignore infinite string of 9s as (\)2.\dot{9} = 3\)). (\B\) has unique decimal representation, not in range of (\f\), (\f\) not onto (\(0,1) \therefore \textit{\#} \therefore\) not denumerable.
+
+- item-num: 45
+  item-name: "ID: 58.2 --- score: 1.03"
+  html: |
+    The interval (0,1) contains an infinite subset so (0,1) is uncountable. Suppose there's a one to one function to count (0,1). We don't use infinite string of 9's to avoid more than one decimal representation. (\b\) differs from (\f(n)\) in the nth decimal place so does not belong to the range of (\f\). This is a contradiction. 
+
+- item-num: 46
+  item-name: "ID: 110.2 --- score: 1.01"
+  html: |
+    If we assume (0,1) to be denumerable, for each natural number n, there is a bijection from (\b\) to (\f(n)\). But because (\b\) has a unique decimal representation, for each natural number n, (\b\) differs from (\f(n)\) in the (\n^{th}\) decimal place. There is no bijection therefore it is untrue. 
+
+- item-num: 47
+  item-name: "ID: 84.1 --- score: 0.99"
+  html: |
+    The proof assume that (0,1) is countable. Then, with a counterexample, it can be seen that this isn't the case. By showing that (\f: \mathbb{N} \rightarrow (0,1)\) is not a bijection we can see that (0,1) is uncountable. 
+
+- item-num: 48
+  item-name: "ID: 57.1 --- score: 0.96"
+  html: |
+    There are an infinite amounts of reals in (0,1) because (\\left\{ \dfrac{1}{2^k}\mid k \in \mathbb{N}\right\}\subseteq (0,1)\). (0,1) is not countable because (\f: \mathbb{N} \rightarrow (0,1)\) is not valid because (\b\) is not in the range of (\f\). Numbers such as 0.759999\)\dots\) are removed. 
+
+- item-num: 49
+  item-name: "ID: 44.2 --- score: 0.95"
+  html: |
+    We assume the interval is countable an that we would therefore have a bijection (\f\) onto the interval. Some elements would have 2 decimal expansions so we removes those with infinite 9's to make each element unique. Turn every expansion into a combination of 3's and 5's and prove this isn't in (\f\), but is in the interval. Therefore no (\f\), so interval uncountable. 
+
+- item-num: 50
+  item-name: "ID: 99.2 --- score: 0.89"
+  html: |
+    Interval (0,1) is uncountable as it has infinitely many numbers in it including the infinite subset (\\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) . There are elements that can be written with infinitely many 9s or 0s. For this proof there is no point beyond which, all values are 9. (\b\) has to be different to (\f\) so (\f\) isn't onto (0,1).
+
+- item-num: 51
+  item-name: "ID: 103.2 --- score: 0.79"
+  html: |
+    (0,1) is infinite as it contains a subset that is infinite. If it's countable, there is a one-to-one function \(\left(f(n)\right)\). A number, \(b\), can be written out as a number that doesn't fit the function (by switching 3's and 5's). Therefore it's not one-to-one, presenting a contradiction. 
+
+- item-num: 52
+  item-name: "ID: 47.1 --- score: 0.77"
+  html: |
+    Open interval (0,1) uncountable. Interval includes subset \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\). (0,1) infinite and denumerable. Function \(f: \mathbb{N}\rightarrow(0,1)\) that is one to one. Don't use representations include infinite 9's. \(b\) exists in interval, \(b \neq f(n)\) for \(n \in \mathbb{N}\). \(F\) not in. Contradiction. 
+
+- item-num: 53
+  item-name: "ID: 58.1 --- score: 0.65"
+  html: |
+    The interval (0,1) is uncountable. We know it's infinite because \(\dfrac{1}{2^k}\) is a subset of it and it is infinite. Then we take any number and write out all it's decimal places. Then \(b\) equals those numbers with its nth term different. Always more numbers therefore countable. 
+
+- item-num: 54
+  item-name: "ID: 81.2 --- score: 0.65"
+  html: |
+    This proof by contradiction explores how a function doesn't map onto an open interval (0,1) by using the decimal representations of \(a\)i and \(b\)i to show them differing from \(f(n)\). 
+
+- item-num: 55
+  item-name: "ID: 31.1 --- score: 0.65"
+  html: |
+    (0,1) is infinite proved by the subset \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\)[illegible]. Now supposing (0,1) is denumerable there is a function onto (0,1). We know that \(b\) is unique as \(b \neq f(n)\) meaning \(b\) does not belong to the range of f. So \(f\) is not onto (0,1). 
+
+- item-num: 56
+  item-name: "ID: 30.1 --- score: 0.65"
+  html: |
+    (0,1) is infinite, prove by infinite subsets. Using contradiction, we can show (0,1) is not denumerable because one number always has a different n\)^{th}\) decimal place to that of the functions. 
+
+- item-num: 57
+  item-name: "ID: 75.1 --- score: 0.62"
+  html: |
+    The interval (0,1) is infinite because it includes the infinite subset \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) . (0,1) is also not denumerable since: a constructed \(b (=0.b_1b_2b_3\dots )\) in (0,1) contradicts our assumptions. Therefore (0,1) is uncountable.
+
+- item-num: 58
+  item-name: "ID: 27.1 --- score: 0.61"
+  html: |
+    The proof shows that (0,1) is not denumerable show from \(b \in\) (0,1) but yet different from \(f\) and \(f(n)\) which contradicts original assumptions that all (0,1) is represented by \(f(n)\). 
+
+- item-num: 59
+  item-name: "ID: 34.2 --- score: 0.59"
+  html: |
+    Prove interval is infinite by showing infinite subset. Claim interval is denumerable to give one-to one mapping. Does this by not allowing multiple representations of some number. Shows \(b\) is unique but differs from \(f(n)\). \(B\) %capitalised by participant 
+    not in range, \(\therefore\) contradiction. 
+
+- item-num: 60
+  item-name: "ID: 65.1 --- score: 0.57"
+  html: |
+    (0,1) includes the \(\subseteq \left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) . Therefore, (0,1) is infinite. Suppose that (0,1) is denumerable. Then there is a function \(f: \mathbb{N}\rightarrow (0,1)\), 1 to 1 function. Some elements of (0,1) have too different decimal representations. For all \(n \in \mathbb{N} f(n) = 0.a_{n1}a_{n2}a_{n3}\dots\) . No \(k\) s.t. \(\forall i > k, a{ni} = 9\).
+
+- item-num: 61
+  item-name: "ID: 64.2 --- score: 0.56"
+  html: |
+    We are saying that \(f(n)\) can map onto the interval (0,1), but then introduce a decimal expansion b which is clearly in (0,1) but is not part of \(f(n)\) so \(f(n)\) cannot possibly map onto (0,1). \(\textit{\#}\)
+
+- item-num: 62
+  item-name: "ID: 116.1 --- score: 0.54"
+  html: |
+    \(f:\mathbb{N} \rightarrow(0,1)\) as decimals shows that we cannot have \(k\) such that \(i > k, a_{ni} = 9\). Representing \(b\) where \(b_i = 5\) shows that it is in (0,1) and unique. But it differs by the n\)^{th}\) decimal place, \(b\) cannot be in \(f\). \(\therefore (0,1) =\) not denumerable. 
+
+- item-num: 63
+  item-name: "ID: 102.2 --- score: 0.51"
+  html: |
+    \(f(n)\) is an decimal in the set (0,1), which is not infinite despite confusing an infinite subset. By swapping 5's and 3's in \(a_{ni}\), you produce a number \(b_{ni}\) which is not in the range of \(f\). %Participant also writes "(SWAP FOR OTHER BOX)" but I assume this has been taken care of and isn't part of their explanation. 
+
+- item-num: 64
+  item-name: "ID: 51.1 --- score: 0.51"
+  html: |
+    Interval (0,1) includes \(\left\{\dfrac{1}{2^k}\right\} \Rightarrow\) infinite. Right image of \(f\), disregarding equal numbers (i.e where 0.129999\)\dots\) = 0.13). \(b\) is  number different to \(f(n)\). \(b \neq f\) so \(f\) is not onto (0,1). Contradiction. 
+
+- item-num: 65
+  item-name: "ID: 13.2 --- score: 0.47"
+  html: |
+    (0,1) has a subset \(\dfrac{1}{2^k}\) where \(k\) is in the naturals. Therefore 0,1 is infinite and uncountable. There is no \(k\) such that \(i > k\), \(a_{ni}\) = 9. \(b = 0.1b_1b_2b_3b_4\). It has a unique decimal representation. \(B\) does not belong to the range of \(f\). So \(f\) is not on (0,1) \(\therefore\) it is uncountable. 
+
+- item-num: 66
+  item-name: "ID: 43.2 --- score: 0.47"
+  html: |
+    An interval (0,1) is infinite and supposed to be denumerable. Including a subset, which is infinite. The image of \(f\) (1-to-1 with (0,1) is written in decimal form. Another number \(b\) differs to \(f(n)\) in the nth decimal place. \(f\) is not onto (0,1). 
+
+- item-num: 67
+  item-name: "ID: 95.1 --- score: 0.46"
+  html: |
+    Using proof by contradiction, say we have a sequence of decimal numbers we can always get another decimal number by swapping every digit that is not a 5 to a 5 and swapping every 5 to a three e.g 0.21353 \(\rightarrow\) 0.55535
+
+- item-num: 68
+  item-name: "ID: 54.2 --- score: 0.45"
+  html: |
+    The interval (0,1) is infinite as the set \(\left\{\dfrac{1}{2^k}\mid k\in \mathbb{N}\right\}\) is infinite. If (0,1) is denumerable, \(\exists\) a function \(f\) s.t. \(\forall n \in \mathbb{N}\), \(f(n)\) maps to every number in (0,1). \(\exists\) a number \(b\) s.t \(f(k) \neq b\) and so (0,1) can't be denumerable. 
+
+- item-num: 69
+  item-name: "ID: 99.1 --- score: 0.41"
+  html: |
+    There's a function that means any \(n \in \mathbb{N}\) can be mapped to a number within the interval (0,1). Decimals within (0,1)  cannot have an infinite string of 9's therefore \(b\) has a unique expansion. As \(b\) differs from the function of n, it doesn't belong to it's range \(\rightarrow\) (interval (0,1)
+
+- item-num: 70
+  item-name: "ID: 42.2 --- score: 0.41"
+  html: |
+    It is a proof by contradiction with \(f: \mathbb{N} \rightarrow\) (0,1) which is one-to-one on (0,1). The decimal expansions have infinite strings of numbers. \(b\) differs from \(f(n)\) at some points. \(b\) doesn't belong to range \(f\).   
+
+- item-num: 71
+  item-name: "ID: 79.2 --- score: 0.38"
+  html: |
+    The interval (0,1) is infinite. If (0,1) is denumerable then \(f: \mathbb{N} \rightarrow\) (0,1) is one-to-one and onto (0,1). Some elements have two different representations so we ignore all that have an infinitely occurring 9. \(B\) does not contain 2 numbers which = each other. When it gets to the nth decimal place \(b\) has a different number to n. 
+
+- item-num: 72
+  item-name: "ID: 74.1 --- score: 0.37"
+  html: |
+    If we represent \(f(n)\) as \(0.a_{n1}a_{n2}a_{n3}\dots\) and choose a \(b \in\) (0,1) s.t. \(b_i\) = 5 in all places other than where \(a_{ii}\) = 5, we then form a number that is not represented by \(f(n)\) but is in the interval so it cannot be countable. 
+
+- item-num: 73
+  item-name: "ID: 98.1 --- score: 0.36"
+  html: |
+    (0,1) contains an infinite subset which means (0,1) is infinite. Through contradiction, there isn't a one-to-one function \(f(n)\), mapping onto (0,1), with a unique decimal representation, making (0,1) non-denumerable.
+
+- item-num: 74
+  item-name: "ID: 49.1 --- score: 0.35"
+  html: |
+    It first lists that (0,1) is infinite since 2\)^{-n} \forall n \in \mathbb{N}\) are in this set. A bijection also exists for all values in this set with those with \(\dot{9}\) unincluded. Thus if all value are, consequently, unique. However, with conditions of \(b\), \(\left\{ b \right\}\) is not unique and, since \(\left\{ b \right\} \in\) (0,1), (0,1) is uncountable.  
+
+- item-num: 75
+  item-name: "ID: 26.1 --- score: 0.27"
+  html: |
+    Proof [illegible] that (0,1) is denumerable, as it contains an infinite subset. Therefore infinite function of numbers labelled a. They introduce \(b\) which \(\in\) (0,1), which differs from a on nth term meaning \(b \neq\) function, meaning \(fn\) is not onto (0,1) meaning (0,1) is not denumerable on \(b\) is numerable. 
+
+- item-num: 76
+  item-name: "ID: 52.1 --- score: 0.26"
+  html: |
+    We know (0,1) has subsets that are infinite eg \(\left(\dfrac{1}{2^k}\right)\). We can represent values in (0,1) using the one-to-one map \(f: \mathbb{N} \rightarrow\) (0,1) [illegible - maybe "thus"], using n \(\in \mathbb{N}\) gives general formula \(f(n) = 0.a_{n1}a_{n2}a_{n3}\dots\). To avoid repeating decimal expansion eg \(\dot{9}\) or \(\dot{0}\) we use \(b\), helping avoid 9s or 0s. BUT, this new \(b\) number differs from that created in the first part of the proof. Meaning \(b\) does not fit on \(f(n)\). (Honestly I don't really understand the part about \(b\)). %I'm not sure this last sentence is necessary.
+
+- item-num: 77
+  item-name: "ID: 17.1 --- score: 0.23"
+  html: |
+    \(\dfrac{1}{2^k}\) is a subset of (0,1) (where \(k \in \mathbb{N}\)). It is infinite as \(\dfrac{1}{2^k}\) remains within (0,1) as \(k \rightarrow \infty\) and so (0,1) is infinite. There is a bijection \(f: \mathbb{N} \rightarrow\) (0,1). 
+Proof by contradiction. Shows (0,1) is not denumerable \(b\) does not satisfy the bijection for all n \(\in \mathbb{N} \Rightarrow\) is uncountable. 
+
+- item-num: 78
+  item-name: "ID: 62.1 --- score: 0.21"
+  html: |
+    The interval (0,1) contains a subset that is infinite. We can write functions of this set in their decimal form where the highest \(a_{ni}\) point equals 9. Allocating \(\left(b_n\right)\)to \(f(n)\) gives us a different representation and can't equal \(f(n)\). \(f(n)\) is therefore not denumerable. 
+
+- item-num: 79
+  item-name: "ID: 45.2 --- score: 0.20"
+  html: |
+    Assuming there is a function \(f\) which maps natural numbers to those in the set (0,1). So we assume (0,1) is finite and countable. We don't use any numbers of the image that have repeating 9s as they are the same as repeating 0s to assume \(f\) is a one-to-one function. Set that \(a_{ii} \neq\) 5 when \(b_i = 5\) to allow 1-to-1 function. Then \(b \neq f(n) \forall n \in \mathbb{N}\). 
+
+- item-num: 80
+  item-name: "ID: 90.1 --- score: 0.19"
+  html: |
+    I think the proof demonstrates that for any \(a\) in the image of \(f\) there are some \(b\) that are not in the image of \(f\) then contradiction to assumption %I think this is what it says.
+
+- item-num: 81
+  item-name: "ID: 77.2 --- score: 0.17"
+  html: |
+    \(f(n)\) is a number in decimal form, \(0 < f(n) < 1\), denote by a function that is defined up to \(\infty\). \(b\) is then given finding the nth decimal place of the nth decimal eg \(f(3) =\) 0.527 could be possible so the 3rd decimal of \(b\) relates to the '7' following rules that change \(b\) to differ from all \(f(n)\) outputs but still \(0 < b < 1\). 
+
+- item-num: 82
+  item-name: "ID: 60.2 --- score: 0.03"
+  html: |
+    (0,1) includes subset \(\left\{\dfrac{1}{2^k} k \in \mathbb{N}\right\}\) . Suppose (0,1) is denumerable, then \(f: \mathbb{N} \rightarrow\) (0,1) is one to one. Some elements of (0,1) have two different representations. Don't use with string of 9's. \(\forall n \in \mathbb{N}\), \(f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4}a_{n5}\dots\) s.t there is not \(k \forall i > k\), \(a_{ni} =\) 9.
+
+- item-num: 83
+  item-name: "ID: 2.2 --- score: -0.00"
+  html: |
+    This is a proof by contradiction to show that \(f\) is not bijective and that \(b\) is always different in any nth decimal place, where as the assumption from \(f\) is that for each n \(\in \mathbb{N}\) has one to one outcome. 
+
+- item-num: 84
+  item-name: "ID: 19.1 --- score: -0.05"
+  html: |
+    The interval (0,1) includes an infinite subset \(\left\{\dfrac{1}{2^k}: k \in N \right\}\) . However because there can be no one to one map from \(f: \mathbb{N} \rightarrow\) (0,1) due to unique decimals strings for each \(f(n)\) then the open interval is uncountable. 
+
+- item-num: 85
+  item-name: "ID: 69.2 --- score: -0.05"
+  html: |
+    Suppose (0,1) is denumerable, there is a 1-1 function onto (0,1). Represent \(f(n)\) so \(i > k\), \(a_{ni} =\) 9. Create a \(b\), must be \(\in\) (0,1). It's unique. 
+
+- item-num: 86
+  item-name: "ID: 66.1 --- score: -0.14"
+  html: |
+    The proof is using a subset with infinite terms to show that between (0,1) there's an uncountable amount of numbers. It then goes onto suggest that it's denumerable but uses a counterexample to show that it isn't. 
+
+- item-num: 87
+  item-name: "ID: 25.1 --- score: -0.23"
+  html: |
+    It is prove that there are infinite numbers between 0 and 1. Proof by contradiction. Suppose (0,1) is countable. use the fact that there are infinite possibilities of decimals. 0.\)\dot{9}\) is excluded. 
+
+- item-num: 88
+  item-name: "ID: 64.1 --- score: -0.27"
+  html: |
+    The interval (0,1) is infinite and we can never write a decimal with all 9's. We know that b has unique decimal representation. Thus \(b \neq f(n)\) for any n \(\in \mathbb{N}\) so \(f\) is not in range, so denumerable. 
+
+- item-num: 89
+  item-name: "ID: 11.2 --- score: -0.39"
+  html: |
+    The open interval is uncountable. \(f\) is mapped onto (0,1), the images are written in decimal form. Then, \(f(n)\) is not represented so that it ends in 9's or 0's. They show a contradiction, showing \(b\) is not in the range of \(f(n)\).
+
+- item-num: 90
+  item-name: "ID: 113.2 --- score: -0.42"
+  html: |
+    This prove tells us that the interval is infinite as we cannot find a set to map all elements of the interval one to tone. Therefore the interval is uncountable.
+
+- item-num: 91
+  item-name: "ID: 18.1 --- score: -0.42"
+  html: |
+    The proof aims to to prove that (0,1) is uncountable. It achieves this by assuming that it isn't, then finding an example which is contradicting, hence proving uncountability by contradiction.  
+
+- item-num: 92
+  item-name: "ID: 32.1 --- score: -0.43"
+  html: |
+    The interval (0,1) includes infinite subsets therefore must be infinite itself. However it is not denumerable as \(b\) differs from \(f(n)\) in the nth decimal place due to its construction. 
+
+- item-num: 93
+  item-name: "ID: 108.2 --- score: -0.45"
+  html: |
+    First we have taken a set \(\left(\dfrac{1}{2^k}: k \in \mathbb{N}\right)\) which is the interval between 0 and 1. We then take \(f(n) = 0.a_{n1}a_{n2}a_{n3}a_{n4} \dots\). Often it is states that some numbers have 2 decimal expansions. Ignore decimal expansions = 0.999\)\dots\) Choose a number \(b \in\) (0,1) with decimal expansion \(0.b_1b_2b_3b_4\dots\) We then contradict te argument.
+
+- item-num: 94
+  item-name: "ID: 80.2 --- score: -0.47"
+  html: |
+    There is an interval (0,1) which contains a subset which is infinite. One-to-one function in interval(0,1) maps to unique decimal forms. As there is two different decimal representations one with infinite string of 9's is not used. 
+
+- item-num: 95
+  item-name: "ID: 72.2 --- score: -0.58"
+  html: |
+    The proof suggests that every number in the interval can be assigned to the set \(\mathbb{N}\). By using contradiction, it is proved that there is always a number in the interval which is not assigned. 
+
+- item-num: 96
+  item-name: "ID: 50.1 --- score: -0.62"
+  html: |
+    The proof states that because there's a subset in the interval that's infinite, the interval must be infinite. It then states the numbers in decimal form 0 to 1. Some numbers contain an infinite set of 9's but these are not included in the proof. It then gives a number '\)b\)' and tries to find \(b\)'s value within the range 0 and 1 but it cannot be done, therefore proving the theorem. 
+
+- item-num: 97
+  item-name: "ID: 106.1 --- score: -0.64"
+  html: |
+    Show that (0,1) is infinite. Commence proof by contradiction for denumerability. Express function in (0,1). Constrain to ensure there are unique outputs. Contradict.
+
+- item-num: 98
+  item-name: "ID: 59.2 --- score: -0.65"
+  html: |
+    \(\dfrac{1}{2^k}\) %I'm assuming this is what they meant. is in between 0 and 1 \(\forall k \in \mathbb{N}\) and as we know \(\left(\dfrac{1}{2^k}\right)\) has infinite terms, so must the interval (0,1). Suppose you can count for 0 \(\rightarrow\) 1 then there would be [illegible] decimals as seen. Then got not idea. 
+
+- item-num: 99
+  item-name: "ID: 12.2 --- score: -0.66"
+  html: |
+    The interval (0,1) is uncountable as includes subset \(\left\{\dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) which is finite, therefore (0,1) is finite. The function \(f: N \rightarrow\) (0,1) is a bijection. So we write images of \(f\), n \(\in \mathbb{N}\). Some elements have different strings, e.g. end in 9's or 0's. \(b = 0.b_1b_2b_3b_4\) where \(b_i =\) 5 if \(a_{ii} \neq\) 5 and \(b_i =\) 3 if \(a_{ii} =\) 5.
+
+- item-num: 100
+  item-name: "ID: 57.2 --- score: -0.74"
+  html: |
+    (0,1) is  subset of \(\left\{\dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) which is infinite. (0,1) was countable then there would be a function \(f(n)\) that would have values in the subset of (0,1).
+
+- item-num: 101
+  item-name: "ID: 109.1 --- score: -076"
+  html: |
+    \(B\) manages to make a new decimal expansion that differs from \(A\) in a few places so is unique and not in \(A\). 
+
+- item-num: 102
+  item-name: "ID: 104.2 --- score: -0.83"
+  html: |
+    The one-to-one function (0,1) is not uncountable as \(b\) is in the interval (0,1) but \(b\) does not belong in the same range as function (\)f\)), making  a countable function. 
+
+- item-num: 103
+  item-name: "ID: 16.1 --- score: -0.84"
+  html: |
+    We assumed it could be denumerable and using this we say \(f(n) = 0.a_{n1}a_{n2}a_{n3}\dots\) . No strings of \(\infty\) 9's. \(b(n)\) is never the same as \(f(n)\) it is unique so be cannot be in \(f\) so \(f\) cannot be in (0,1) which contradicts.
+
+- item-num: 104
+  item-name: "ID: 35.2 --- score: -0.84"
+  html: |
+    It is not possible to have a one-to-one function from the naturals to (0,1) as.
+
+- item-num: 105
+  item-name: "ID: 78.2 --- score: -0.85"
+  html: |
+    The interval (0,1) includes the subset \(\left\{\dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) which is infinite. Suppose (0,1) is denumerable. Then there is a function \(f: \mathbb{N} \rightarrow\) (0,1).
+
+- item-num: 106
+  item-name: "ID: 41.1 --- score: -0.86"
+  html: |
+    (0,1) is uncountable, presume it is then show a decimal \(b\) constructed from decimal \(a\) is not in (0,1). \(a\) is one to one so discounting any repeating 9 numbers. 
+
+- item-num: 107
+  item-name: "ID: 43.1 --- score: -0.88"
+  html: |
+    The proof shows that the open interval (0,1) is infinite since the subset \(\dfrac{1}{2^k}\) is also infinite. This is then proved by contradiction to show that (0,1) is not denumerable. 
+
+- item-num: 108
+  item-name: "ID: 101.2 --- score: -0.88"
+  html: |
+    Basically showing the image of  for each n. Then shows \(b\) - and that differs from \(f(n)\). So that is a contradiction \(\Rightarrow\) (0,1) is no denumerable. 
+
+- item-num: 109
+  item-name: "ID: 115.1 --- score: -1.02"
+  html: |
+    The proof shows how the numbers in the interval (0,1) is uncountable. It uses the set using \(\dfrac{1}{2^k}\) where \(k\) is any number. This shows that when \(k\) goes to infinity, the numbers between (0,1) are infinite. It then shows the numbers in decimal form which shows there is an infinite string of numbers attached and therefore cannot be counted. 
+
+- item-num: 110
+  item-name: "ID: 52.2 --- score: -1.03"
+  html: |
+    There is an infinite subset which means the whole set is infinite. Each number is constructed in a particular way and to be denumerable has to be constructed two different ways. It can only be constructed one way. Contradiction. 
+
+- item-num: 111
+  item-name: "ID: 114.2 --- score: -1.08"
+  html: |
+    The proof starts by initially contradicting the statement, and concludes by showing the contradiction made is wrong. Further on it contradicts itself by saying the way in which decimals are formed in itself is wrong %I'm not sure this is correct
+
+- item-num: 112
+  item-name: "ID: 23.2 --- score: -1.08"
+  html: |
+    Using the idea that the set (0,1) is infinite and proof by contradiction to show that \(b\) differs from \(f\) for every nth term. 
+
+- item-num: 113
+  item-name: "ID: 42.1 --- score: -1.10"
+  html: |
+    The subset \(\left\{\dfrac{1}{2^k}: k \in \mathbb{N}\right\} \in\) (0,1). As the subset is infinite, (0,1) is also infinite. If (0,1) is denumerable, a function \(f: \mathbb{N} \rightarrow\) (0,1) exists which is one-to-one (has one output value for each input) and onto (0,1). The function we [draw?] are written as follows. \(f(1) = 0.a_{11}a_{12}a_{13}\dots f(2) = 0.a_{21}a_{22}a_{23}\dots \vdots f(n) = 0.a_{n1}a_{n2}a_{n3}\dots\)
+
+- item-num: 114
+  item-name: "ID: 85.1 --- score: -1.11"
+  html: |
+    As the number \(b\) is defined as a number that is slightly different to the number assigned to it it cannot be assigned a Natural number in the form \(f(n)\). 
+
+- item-num: 115
+  item-name: "ID: 22.2 --- score: -1.23"
+  html: |
+    Proved that (0,1) is not denumerable therefore uncountable. The proof contradicted the first assumption that (0,1) is denumerable. 
+
+- item-num: 116
+  item-name: "ID: 25.2 --- score: -1.28"
+  html: |
+    Show the function can't be mapped one-to-one with be contradicts the original assumption, implying the opposite, which was the original theorem. 
+
+- item-num: 117
+  item-name: "ID: 46.2 --- score: -1.33"
+  html: |
+    The interval (0,1) contains a subset that is infinite, so (0,1) must also be infinite. There must then also be a function that is countably infinite within this interval. Some number have two decimal expansions, one ending in infinite zeroes \& another in infinite 9s. There are equivalent so only use the infinite zero form so each \(f(n)\) has a unique expansion.
+
+- item-num: 118
+  item-name: "ID: 41.2 --- score: -1.33"
+  html: |
+    There is a subset in the interval which is infinite (3c). To eliminate repeats, we removed the infinite string of 9's (20). If a decimal point \(\neq\) 5 then \(b_i =\) 5, and if the decimal point = 5 then \(b_i\) = 3. 
+
+- item-num: 119
+  item-name: "ID: 38.1 --- score: -1.41"
+  html: |
+    This proof represents al countable numbers in the subset and uses these numbers which map 'one to many' for \(k\), which have infinite decimal places in the subset by connecting it one to one. \(a_i\) has a set value for \(b_i\) = 3 but when \(b_i\) = 5 \(a_i \neq\) 5 so \(a_i\) can take any other value meaning the solution is only unique for \(b_i\) = 3 not when \(a_i \neq\) 5. 
+
+- item-num: 120
+  item-name: "ID: 91.1 --- score: -1.56"
+  html: |
+    The interval (0,1) is uncountable if we can prove it's infinite with the \(\left\{ A\mid \dfrac{1}{q^k} \forall k \in \mathbb{N}\right\}\) as naturally the interval infinite as the set is infinite. %almost illegible so needs another pair of eyes I think. 
+
+- item-num: 121
+  item-name: "ID: 89.1 --- score: -1.56"
+  html: |
+    Proof by contradiction. The interval is proved to be non-denumerable by the fact that \(b\) has a unique representation, thus \(f(n)\) is not unique. 
+
+- item-num: 122
+  item-name: "ID: 76.1 --- score: -1.67"
+  html: |
+    We prove that the number \(b\) is onto (0,1) and that \(b\) is never in \(f(n)\) so that \(f(n)\) isn't onto (0,1) to create a contradiction. 
+
+- item-num: 123
+  item-name: "ID: 44.1 --- score: -1.73"
+  html: |
+    The real numbers between 0 and 1 cannot be listed because each decimal expansion is infinite for all repeating and non-repeating expansions. 
+
+- item-num: 124
+  item-name: "ID: 53.2 --- score: -1.77"
+  html: |
+    We state the case: The interval (0,1) has an infinite subset \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) . We assume (0,1) is infinite since the subset is infinite. Then we use mathematical induction. 
+
+- item-num: 125
+  item-name: "ID: 113.1 --- score: -1.85"
+  html: |
+    \(b = 0.a_{11}a_{22}a_{33}a_{44}\dots\). The numbers equal either 5, if \(a_{ii} \neq\) 5, or 3, if \(a_{ii}\) = 5. eg) \(b\) = 0.535553\)\dots\) For two unique \(f(n)\) decimals, \(f\left(n_1\right)\) and \(f\left(n_2\right)\), the \(b\) number may be the same. I do not understand the last paragraph. 
+
+- item-num: 126
+  item-name: "ID: 21.1 --- score: -1.87"
+  html: |
+    The interval (0,1) is infinite as it includes subsets that are infinite e.g \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\). 0 can be represented by an infinite string of 0's and 1 can have the decimal representation of a infinite string of 9's. 
+
+- item-num: 127
+  item-name: "ID: 15.2 --- score: -1.96"
+  html: |
+    The proof is a proof by contradiction, so it suggests \(f\) is onto (0,1), but when proved it does not. So at the end, the proof proves \(f\) is onto (0,1), by contradiction. 
+
+- item-num: 128
+  item-name: "ID: 115.2 --- score: -2.00"
+  html: |
+    (0,1) is infinite. Use proof by contradiction to state that (0,1) is not denumerable. 
+
+- item-num: 129
+  item-name: "ID: 84.2 --- score: -2.04"
+  html: |
+    A subset of (0,1) is used to try and prove that (0,1) is uncountable. Then I get lost  when \(a\), \(b\) are used as I don't know how they would affect the proof without them. 
+
+- item-num: 130
+  item-name: "ID: 109.2 --- score: -2.11"
+  html: |
+    The proof show (0,1) is not denumerable by method of contradiction. 
+
+- item-num: 131
+  item-name: "ID: 105.2 --- score: -2.22"
+  html: |
+    It's a proof by contradiction to prove the open interval (0,1) is uncountable. I don't know. 
+
+- item-num: 132
+  item-name: "ID: 118.2 --- score: -2.30"
+  html: |
+    By using a specific subset we can generate an infinite amount of number within the interval and use the function to show that the decimal places are also infinite. \(b\) is an element within (1,0) so that's unique so they are denumerable. 
+
+- item-num: 133
+  item-name: "ID: 48.1 --- score: -2.43"
+  html: |
+    \(\left[ 0,1 \right]\) \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\}\) (0,1) is infinite. \(f: \mathbb{N}\rightarrow \) (0,1) is one-to-one onto (0,1). 
+
+- item-num: 134
+  item-name: "ID: 77.1 --- score: -2.58"
+  html: |
+    There are infinitely many value between 0 and 1. This uses proof by contradiction. 
+
+- item-num: 135
+  item-name: "ID: 20.1 --- score: -3.67"
+  html: |
+    The proof suggests and shows that seeing as there are a number of subsets in the interval (0,1) that have infinite values, then the interval (0,1) is uncountable. 
+
+- item-num: 136
+  item-name: "ID: 83.2 --- score: -3.68"
+  html: |
+    Proves that for the interval (0,1) there is an infinite set of numbers between (0,1) that is countable and can be represented as a decimal expansion. 
+
+- item-num: 137
+  item-name: "ID: 112.2 --- score: -4.02"
+  html: |
+    BLANK %Obviously to denote participant left this blank
+
+- item-num: 138
+  item-name: "ID: 48.2 --- score: -4.11"
+  html: |
+    BLANK
+    
+- item-num: 139
+  item-name: "ID: 51.2 --- score: -4.40"
+  html: |
+    Between 0 \& 1, we can show/list the numbers \(\dfrac{1}{2^k}\) and \(\dots\)
+    
+- item-num: 140
+  item-name: "ID: 10.2 --- score: -4.50"
+  html: |
+    BLANK
+    
+- item-num: 141
+  item-name: "ID: 3.2 --- score: -5.06"
+  html: |
+    BLANK
+    
+- item-num: 142
+  item-name: "ID: 65.2 --- score: -5.78"
+  html: |
+    Didn't understand it at all - didn't even understand terminology or the concept (guessed all answers to the question). 
+
+- item-num: 143
+  item-name: "ID: 45.1 --- score: -6.78"
+  html: |
+    BLANK
+
+    
+    
