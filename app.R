@@ -510,6 +510,9 @@ server <- function(input, output, session) {
           sortable_js(
             css_id = "items_to_be_ranked",
             options = sortable_options(
+              # Set the ranked_items input value to the original unsorted order
+              onLoad = sortable_js_capture_input(input_id = "ranked_items"),
+              # Update ranked_items whenever the user re-sorts the list
               onSort = sortable_js_capture_input(input_id = "ranked_items")
             )
           ),
