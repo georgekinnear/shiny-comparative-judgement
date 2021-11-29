@@ -1,7 +1,8 @@
 library(tidyverse)
 library(shiny)
 library(shinyjs)
-library(sortable)
+library(sortable) # for the ranking
+library(shinyWidgets) # for the slider
 library(pool)
 library(yaml)
 library(DT)
@@ -32,21 +33,31 @@ studies <- tibble::tribble(
   "rank_cj", "Which is the better item?", 20L,
 )
 
+method_labels <- c(
+  "cj" = "Comparative judgement",
+  "ccj" = "Comparative judgement (chained pairs)",
+  "rank" = "Ranking"
+)
+
 # Define the pages that each group will be shown in order
 # - for each group, provide a list of strings, where the content of the string
 #   matches the name of a page to show
 study_pages <- list(
   "cj_rank" = c("instructions_cj",
                 paste0("cj", c(1:15)),
+                "evaluate_cj",
                 "instructions_rank",
                 paste0("rank", c(1:5)),
+                "evaluate_rank",
                 "evaluation",
                 "thanks"
               ),
   "rank_cj" = c("instructions_rank",
                 paste0("rank", c(1:5)),
+                "evaluate_rank",
                 "instructions_cj",
                 paste0("cj", c(1:15)),
+                "evaluate_cj",
                 "evaluation",
                 "thanks"
   )
@@ -343,16 +354,43 @@ server <- function(input, output, session) {
   })
     
   #
-  # Final survey page
+  # Participant feedback
   #
   observe({
+    if (page_to_show$page %in% c("evaluate_cj", "evaluate_ccj", "evaluate_rank")) {
+      output$pageContent <- renderUI({
+        tagList(
+          h3("Your opinions about this method"),
+          p(""),
+          sliderTextInput(
+            inputId = "method_rating",
+            label = "How easy did you find it to make your decisions?",
+            grid = TRUE,
+            #force_edges = TRUE,
+            choices = c("Very difficult", "Difficult", "Neutral", "Easy", "Very easy"),
+            selected = "Neutral",
+            width = "400px"
+          ),
+          textAreaInput("method_comment", label = "What difficulties (if any) did you encounter?", width = "100%", height = "6em"),
+          fluidRow(
+            column(4, offset = 4, actionButton("completed_method_eval", "Submit", class = "btn-success btn-lg btn-block", icon = icon("check")))
+          )
+        )
+      })
+    }
     if (page_to_show$page == "evaluation") {
+      methods_list <- paste0("Method ", c(1:2), ": ", method_labels[str_split(session_info$study_id, "_")[[1]]])
       output$pageContent <- renderUI({
         tagList(
           h3("Your opinions"),
-          # TODO - add input boxes for the survey questions
-          markdown::markdownToHTML(text = read_file(paste0("PAGE_", page_to_show$page, ".md")),
-                                   fragment.only = TRUE) %>% HTML() %>% withMathJax(),
+          p("Which of the two methods did you prefer, and why?"),
+          radioButtons(
+            inputId = "eval_rating",
+            label = "",
+            choices = methods_list,
+            selected = character(0)
+          ),
+          textAreaInput("eval_comment", label = "", width = "100%", height = "6em"),
           fluidRow(
             column(4, offset = 4, actionButton(paste0("completed_", page_to_show$page), "Submit", class = "btn-success btn-lg btn-block", icon = icon("check")))
           )
@@ -369,8 +407,38 @@ server <- function(input, output, session) {
       })
     }
   })
+  observeEvent(input$completed_method_eval, {
+    # save their answers to the database
+    dbWriteTable(
+      pool,
+      "decisions",
+      tibble(
+        judge_id = session_info$judge_id,
+        step = page_to_show$page,
+        decision = input$method_rating,
+        time_taken = 0,
+        comment = input$method_comment
+      ),
+      row.names = FALSE,
+      append = TRUE
+    )
+    advance_page()
+  })
   observeEvent(input$completed_evaluation, {
-    # TODO - save their answers to the database
+    # save their answers to the database
+    dbWriteTable(
+      pool,
+      "decisions",
+      tibble(
+        judge_id = session_info$judge_id,
+        step = page_to_show$page,
+        decision = input$eval_rating,
+        time_taken = 0,
+        comment = input$eval_comment
+      ),
+      row.names = FALSE,
+      append = TRUE
+    )
     advance_page()
   })
   
