@@ -496,6 +496,7 @@ server <- function(input, output, session) {
       output$pageContent <- renderUI({
         tagList(
           h3(assigned_study[["judging_prompt"]]),
+          h4("BEST", align = "center"),
           # The "items_to..." id/class values are used to style the items using CSS
           # The `data-rank-id` is used by sortable_js to keep track of the item id's after the judge has moved them around
           div(id = "items_to_be_ranked",
@@ -505,6 +506,7 @@ server <- function(input, output, session) {
               div(class = "item_to_rank", id = "ranking4", `data-rank-id` = items_to_rank[4], item_content(items_to_rank[4])),
               div(class = "item_to_rank", id = "ranking5", `data-rank-id` = items_to_rank[5], item_content(items_to_rank[5]))
           ),
+          h4("WORST", align = "center"),
           sortable_js(
             css_id = "items_to_be_ranked",
             options = sortable_options(
