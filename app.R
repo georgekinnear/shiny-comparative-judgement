@@ -295,7 +295,7 @@ server <- function(input, output, session) {
   
   # Box for comments used across all judging pages 
   output$comments <- renderUI({
-    if(pair$pair_num > 0) {
+    if (str_starts(page_to_show$page, "cj") | str_starts(page_to_show$page, "ccj") | str_starts(page_to_show$page, "rank")) {
       textAreaInput("judging_comment", label = "Comments (optional)", width = "100%", height = "4em")
     }
   })
