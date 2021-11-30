@@ -101,6 +101,101 @@ make_cj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
   )
 }
 
+make_ccj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
+  
+  # 1. Gather data on which judgements have been made already in this study group
+  
+  # all comparisons from this study
+  judgement_data <- pool %>% 
+    tbl("decisions") %>% 
+    select(-contains("comment")) %>% 
+    collect() %>% 
+    filter(str_starts(step, "cj")) %>% 
+    separate(decision, into = c("pair_shown", "winner_loser"), sep = " -> ") %>% 
+    separate(pair_shown, into = c("left", "right"), sep = ",") %>% 
+    separate(winner_loser, into = c("won", "lost"), sep = ",") %>% 
+    mutate(across(c("left", "right", "won", "lost"), as.integer))
+  
+  if(length(restrict_to_study_id) > 0) {
+    judgement_data <- judgement_data %>%
+      left_join(
+        pool %>% tbl("judges") %>% 
+          select(judge_id, study_id) %>% 
+          collect(),
+        by = "judge_id"
+      ) %>% 
+      filter(study_id == !!restrict_to_study_id)
+  }
+  
+  # count the number of comparisons for each pair
+  pairs_judged <- judgement_data %>%
+    rowwise() %>%
+    mutate(pair = paste(sort(c(won, lost)), collapse = '_')) %>% 
+    select(pair, judge_id) %>%
+    group_by(pair) %>% 
+    tally() %>% 
+    arrange(-n) %>% 
+    separate(pair, c("s1", "s2"), "_") %>% 
+    mutate(across(c("s1", "s2"), as.integer))
+  
+  # systematically list all pairs, and add the counts for each
+  all_pairs_status <-
+    crossing(scripts %>% select(s1 = item_num),
+             scripts %>% select(s2 = item_num)) %>%
+    filter(s1 < s2) %>%
+    left_join(pairs_judged, by = c("s1", "s2")) %>%
+    mutate(n = replace_na(n, 0))
+  
+  # 2. Select pairs from among the least judged so far
+  
+  pairs_to_judge <- tibble()
+  
+  while(nrow(pairs_to_judge) < pairs_to_make) {
+    
+    if(nrow(pairs_to_judge) == 0) {
+      # start with the least judged pairs
+      new_pairs_to_judge <- all_pairs_status %>% 
+        filter(n == min(n)) %>% 
+        slice_sample(n = 1)
+    } else {
+      # but if we have selected some pairs already, remove them from
+      # consideration (using anti_join) and look at the next-least-judged pairs
+      last_rh_script <- tail(pairs_to_judge,1)$s2
+      new_pairs_to_judge <- all_pairs_status %>% 
+        anti_join(pairs_to_judge, by = c("s1", "s2", "n")) %>%# need to worry about order here?
+        anti_join(pairs_to_judge, by = c("s1" = "s2", "n")) %>%
+        #filter() #s1 or s2 is equal to last_rh_script DONE
+        filter(s1 == last_rh_script | s2 == last_rh_script) %>%
+        filter(n == min(n)) %>% 
+        slice_sample(n = 1) # then also shuffle them so last_rh_script is s1 ??
+      #if last_rh_script is on the right, swap order
+      if(last_rh_script == new_pairs_to_judge$s2){
+        new_pairs_to_judge$s2 <- new_pairs_to_judge$s1
+        new_pairs_to_judge$s1 <- last_rh_script
+      }
+    }
+    
+    pairs_to_judge <- bind_rows(pairs_to_judge,
+                                new_pairs_to_judge)
+  }
+  
+  return(pairs_to_judge %>%
+           # trim to the desired number of pairs
+           slice_head(n = pairs_to_make) %>% 
+           # shuffle the scripts into left and right
+           mutate(
+             x = sample(c(0,1), size = pairs_to_make, replace = TRUE),
+             left = ifelse(x==0, s1, s2),
+             right = ifelse(x==0, s2, s1)
+           ) %>% 
+           select(left, right) %>%
+           mutate(pair_num = row_number(), .before = 1)
+  )
+}
+make_cj_pairs()
+make_ccj_pairs()
+
+
 make_tuple <- function(restrict_to_study_id = NULL) {
   
   # 1. Gather data on which judgements have been made already in this study group
@@ -112,6 +207,7 @@ make_tuple <- function(restrict_to_study_id = NULL) {
     select(ranking_id, items_presented) %>% 
     collect() %>% 
     separate_rows(items_presented, sep = ",")
+  
   
   # all comparisons from this study
   judgement_data <- pool %>% 
