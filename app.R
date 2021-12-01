@@ -29,8 +29,10 @@ onStop(function() {
 # TODO - expand this to describe the set of groups that we want in the study
 studies <- tibble::tribble(
   ~study,    ~judging_prompt,             ~target_judges,
-  "cj_rank", "Which is the better item?", 20L,
-  "rank_cj", "Which is the better item?", 20L,
+  "cj_rank", "Which is the better item?", 8L,
+  "rank_cj", "Which is the better item?", 8L,
+  "cj_ccj",  "Which is the better item?", 8L,
+  "ccj_cj",  "Which is the better item?", 8L
 )
 
 method_labels <- c(
@@ -60,7 +62,23 @@ study_pages <- list(
                 "evaluate_cj",
                 "evaluation",
                 "thanks"
-  )
+  ),
+  "cj_ccj" = c("instructions_cj",
+               paste0("cj", c(1:15)),
+               "evaluate_cj",
+               "instructions_ccj",
+               paste0("ccj", c(1:15)),
+               "evaluate_ccj",
+               "evaluation",
+               "thanks"),
+  "ccj_cj" = c("instructions_ccj",
+               paste0("ccj", c(1:15)),
+               "evaluate_ccj",
+               "instructions_cj",
+               paste0("cj", c(1:15)),
+               "evaluate_cj",
+               "evaluation",
+               "thanks")
 )
 
 scripts <- read_yaml("items-to-be-judged.yml") %>%
@@ -82,6 +100,8 @@ assign_to_study <- function() {
     #pull(study_id)
     unlist()
 }
+
+
 
 ui <- fluidPage(
   useShinyjs(),
@@ -466,7 +486,27 @@ server <- function(input, output, session) {
     
     advance_page()
   })
-  # TODO - make a copy of this for completed_instructions_ccj
+  
+  #copy for completed_instructions_ccj
+  observeEvent(input$completed_instructions_ccj, {
+    
+    # find out how many pairs are needed by looking at the list of remaining pages
+    ccj_pages <- tibble(page = remaining_pages) %>%
+      filter(str_starts(page, "ccj")) %>% 
+      mutate(pair_num = row_number())
+    num_pairs_to_make <- ccj_pages %>% nrow()
+    # TODO - worry about if this is ever 0?
+    
+    # use the make_ccj_pairs function from cj_functions.R to produce suitable pairs in this study
+    pairs_to_judge <<- make_ccj_pairs(pairs_to_make = num_pairs_to_make,
+                                     restrict_to_study_id = session_info$study_id) %>% 
+      left_join(ccj_pages, by = "pair_num")
+    print(pairs_to_judge)
+    print("Judging initialised")
+    
+    advance_page()
+  })
+  
   
   # Set up the page for paired comparison
   observe({
