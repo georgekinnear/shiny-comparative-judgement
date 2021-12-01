@@ -192,8 +192,8 @@ make_ccj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
            mutate(pair_num = row_number(), .before = 1)
   )
 }
-#make_cj_pairs()
-#make_ccj_pairs()
+make_cj_pairs()
+make_ccj_pairs()
 
 
 make_tuple <- function(restrict_to_study_id = NULL) {
