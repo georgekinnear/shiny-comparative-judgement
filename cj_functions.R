@@ -1,24 +1,5 @@
 make_cj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
   
-  # TODO!
-  # Essentially a copy of make_cj_pairs
-  
-  # Intended output something like this:
-  # > make_cj_pairs()
-  # # A tibble: 20 x 3
-  # pair_num  left right
-  # <int> <int> <int>
-  # 1        1    15     2
-  # 2        2    11    10
-  # 3        3     4    14
-  # 4        4     9    12
-  
-  # but the right of pair N should become the left of pair N+1
-  
-}
-
-make_cj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
-  
   # 1. Gather data on which judgements have been made already in this study group
   
   # all comparisons from this study
@@ -110,7 +91,7 @@ make_ccj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
     tbl("decisions") %>% 
     select(-contains("comment")) %>% 
     collect() %>% 
-    filter(str_starts(step, "cj")) %>% 
+    filter(str_starts(step, "ccj")) %>% 
     separate(decision, into = c("pair_shown", "winner_loser"), sep = " -> ") %>% 
     separate(pair_shown, into = c("left", "right"), sep = ",") %>% 
     separate(winner_loser, into = c("won", "lost"), sep = ",") %>% 
@@ -161,40 +142,37 @@ make_ccj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
       # but if we have selected some pairs already, remove them from
       # consideration (using anti_join) and look at the next-least-judged pairs
       last_rh_script <- tail(pairs_to_judge,1)$s2
-      new_pairs_to_judge <- all_pairs_status %>% 
-        anti_join(pairs_to_judge, by = c("s1", "s2", "n")) %>%# need to worry about order here?
-        anti_join(pairs_to_judge, by = c("s1" = "s2", "n")) %>%
-        #filter() #s1 or s2 is equal to last_rh_script DONE
+      new_pair_to_judge <- all_pairs_status %>% 
+        # remove pairs that have already been shown to this judge
+        anti_join(
+          bind_rows(
+            pairs_to_judge %>% select(s1, s2),
+            pairs_to_judge %>% select(s1 = s2, s2 = s1)
+          ),
+          by = c("s1", "s2")
+        ) %>% 
+        # restrict to pairs that involve the last RH script
         filter(s1 == last_rh_script | s2 == last_rh_script) %>%
         filter(n == min(n)) %>% 
-        slice_sample(n = 1) # then also shuffle them so last_rh_script is s1 ??
-      #if last_rh_script is on the right, swap order
-      if(last_rh_script == new_pairs_to_judge$s2){
-        new_pairs_to_judge$s2 <- new_pairs_to_judge$s1
-        new_pairs_to_judge$s1 <- last_rh_script
+        slice_sample(n = 1)
+      # if last_rh_script is on the right, swap order
+      if(last_rh_script == new_pair_to_judge$s2){
+        new_pair_to_judge$s2 <- new_pair_to_judge$s1
+        new_pair_to_judge$s1 <- last_rh_script
       }
     }
     
     pairs_to_judge <- bind_rows(pairs_to_judge,
-                                new_pairs_to_judge)
+                                new_pair_to_judge)
   }
   
   return(pairs_to_judge %>%
            # trim to the desired number of pairs
            slice_head(n = pairs_to_make) %>% 
-           # shuffle the scripts into left and right
-           mutate(
-             x = sample(c(0,1), size = pairs_to_make, replace = TRUE),
-             left = ifelse(x==0, s1, s2),
-             right = ifelse(x==0, s2, s1)
-           ) %>% 
-           select(left, right) %>%
+           select(left = s1, right = s2) %>%
            mutate(pair_num = row_number(), .before = 1)
   )
 }
-make_cj_pairs()
-make_ccj_pairs()
-
 
 make_tuple <- function(restrict_to_study_id = NULL) {
   
