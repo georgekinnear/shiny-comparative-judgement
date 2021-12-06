@@ -295,7 +295,7 @@ server <- function(input, output, session) {
       collect() %>%
       slice(1)
     
-    redirect_to_url <- paste0("../?JUDGE=", session_info$shiny_info)
+    redirect_to_url <- paste0("?JUDGE=", session_info$shiny_info)
     
     print(paste0("Redirecting judge ", session_info$judge_id, " to ", redirect_to_url))
     output$pageContent <- renderUI({
@@ -358,7 +358,7 @@ server <- function(input, output, session) {
       })
     }
     # Instruction pages
-    if (page_to_show$page %in% c("instructions_cj", "instructions_rank")) {
+    if (page_to_show$page %in% c("instructions_cj", "instructions_ccj", "instructions_rank")) {
       output$pageContent <- renderUI({
         tagList(
           h3("Instructions"),
