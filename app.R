@@ -29,10 +29,10 @@ onStop(function() {
 # TODO - expand this to describe the set of groups that we want in the study
 studies <- tibble::tribble(
   ~study,    ~judging_prompt,             ~target_judges,
-  "cj_rank", "Which is the better item?", 8L,
-  "rank_cj", "Which is the better item?", 8L,
-  "cj_ccj",  "Which is the better item?", 8L,
-  "ccj_cj",  "Which is the better item?", 8L
+  "cj_rank", "Which is the best summary of the proof?", 8L,
+  "rank_cj", "Which is the best summary of the proof?", 8L,
+  "cj_ccj",  "Which is the best summary of the proof?", 8L,
+  "ccj_cj",  "Which is the best summary of the proof?", 8L
 )
 
 method_labels <- c(
@@ -45,7 +45,8 @@ method_labels <- c(
 # - for each group, provide a list of strings, where the content of the string
 #   matches the name of a page to show
 study_pages <- list(
-  "cj_rank" = c("instructions_cj",
+  "cj_rank" = c("instructions_proof",
+                "instructions_cj",
                 paste0("cj", c(1:15)),
                 "evaluate_cj",
                 "instructions_rank",
@@ -54,7 +55,8 @@ study_pages <- list(
                 "evaluation",
                 "thanks"
               ),
-  "rank_cj" = c("instructions_rank",
+  "rank_cj" = c("instructions_proof",
+                "instructions_rank",
                 paste0("rank", c(1:5)),
                 "evaluate_rank",
                 "instructions_cj",
@@ -63,7 +65,8 @@ study_pages <- list(
                 "evaluation",
                 "thanks"
   ),
-  "cj_ccj" = c("instructions_cj",
+  "cj_ccj" = c("instructions_proof",
+               "instructions_cj",
                paste0("cj", c(1:15)),
                "evaluate_cj",
                "instructions_ccj",
@@ -71,7 +74,8 @@ study_pages <- list(
                "evaluate_ccj",
                "evaluation",
                "thanks"),
-  "ccj_cj" = c("instructions_ccj",
+  "ccj_cj" = c("instructions_proof",
+               "instructions_ccj",
                paste0("ccj", c(1:15)),
                "evaluate_ccj",
                "instructions_cj",
@@ -351,14 +355,14 @@ server <- function(input, output, session) {
           includeMarkdown("step0-participant-info.md"),
           fluidRow(
             column(4, offset = 4, actionButton("consentButton", "I consent", class = "btn-success btn-lg btn-block", icon = icon("check")))
-          ),
-          h1("For debugging purposes, these are the scripts:"),
-          paste(all_scripts_html$html_out, collapse = "") %>% HTML() %>% withMathJax()
+          )#,
+          #h1("For debugging purposes, these are the scripts:"),
+          #paste(all_scripts_html$html_out, collapse = "") %>% HTML() %>% withMathJax()
         )
       })
     }
     # Instruction pages
-    if (page_to_show$page %in% c("instructions_cj", "instructions_ccj", "instructions_rank")) {
+    if (page_to_show$page %in% c("instructions_proof","instructions_cj","instructions_ccj","instructions_rank")) {
       output$pageContent <- renderUI({
         tagList(
           h3("Instructions"),
@@ -462,7 +466,9 @@ server <- function(input, output, session) {
     advance_page()
   })
   
-  
+  observeEvent(input$completed_instructions_proof, {
+    advance_page()
+  })
   #
   # Traditional comparative judgement
   #
