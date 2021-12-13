@@ -3,7 +3,7 @@
   html: |
     The interval (0,1) contains \(\left\{ \dfrac{1}{2^k}: k \in \mathbb{N}\right\} \Rightarrow f(n) = 0.a_{11}a_{12}a_{13}\dots
     0.a_{21}a_{22}a_{23}\dots
-    \vdots\)
+    \vdots\) <br>
     If we have \(b = 0.b_1b_2B_3\dots\) and every time \(a_{ii} = 5\) make \(b_i = 3\) and \(a_{ii} \neq 5\) make \(b_i = 5, b\) will always be different to \(f(n)\), 
     \(0.a_{11}a_{12}a_{13} \neq 0.b_1b_2B_3\dots \therefore\) no matter what number \(f(n)\) is there will always be \(b \neq f(n) \in (0,1)\) so (0,1) is uncountable. 
     
@@ -15,7 +15,7 @@
 - item-num: 3
   item-name: "ID: 14.2 --- score: 1.77"
   html: |
-    \((0,1) \subseteq \left\{\dfrac{1}{2^k}:k \in \mathbb{N}\right\}\); both are infinite. Suppose (0,1) is denumerable. \(f: \mathbb{N} \rightarrow (0,1)\) that is one-to-one and onto (0,1). \(\forall n \in \mathbb{N}\), \(f(n) = 0.a_{n1}a_{n2}a_{n3} \dots\) where there is no \(k\) s.t. \(\forall i > k\), \(a_{ni} = 9\). Now \(b = 0.b_1b_2b_3b_4 \dots\) where \(b_i = 5\) if \(a_{ii} \neq 5\). \(b_i = 3\) if \(a_{ii} = 5\). We know that \(b \in (0,1)\) however \(b\) differs from \(f(n)\) in the \(n^{th}\) decimal place. So \(b \neq f(n)\) for \(n \in \mathbb{N}\). And \(b\) does not belong in the range \(f\), \(f\) is not onto \((0,1) \textit{\#}\)
+    \((0,1) \subseteq \left\{\dfrac{1}{2^k}:k \in \mathbb{N}\right\}\); both are infinite. Suppose (0,1) is denumerable. \(f: \mathbb{N} \rightarrow (0,1)\) that is one-to-one and onto (0,1). \(\forall n \in \mathbb{N}\), \(f(n) = 0.a_{n1}a_{n2}a_{n3} \dots\) where there is no \(k\) s.t. \(\forall i > k\), \(a_{ni} = 9\). Now \(b = 0.b_1b_2b_3b_4 \dots\) where \(b_i = 5\) if \(a_{ii} \neq 5\). \(b_i = 3\) if \(a_{ii} = 5\). We know that \(b \in (0,1)\) however \(b\) differs from \(f(n)\) in the \(n^{th}\) decimal place. So \(b \neq f(n)\) for \(n \in \mathbb{N}\). And \(b\) does not belong in the range \(f\), \(f\) is not onto \((0,1) \textit{#}\)
 
 - item-num: 4
   item-name: "ID: 68.1 --- score: 1.57"
@@ -30,7 +30,7 @@
 - item-num: 6
   item-name: "ID: 26.2 --- score: 1.10"
   html: |
-    To prove (0,1) is uncountable, first suppose (0,1) \underline{is} denumerable. Then we can form a function \(f: \mathbb{N} \rightarrow (0,1)\) which is one-to-one and onto (0,1) and show that there are decimals that differ in the \(n\)th decimal place, so (0,1) is uncountable. 
+    To prove (0,1) is uncountable, first suppose (0,1) <u>is</u> denumerable. Then we can form a function \(f: \mathbb{N} \rightarrow (0,1)\) which is one-to-one and onto (0,1) and show that there are decimals that differ in the \(n\)th decimal place, so (0,1) is uncountable. 
 
 - item-num: 7
   item-name: "ID: 44.2 --- score: 0.95"
@@ -40,7 +40,7 @@
 - item-num: 8
   item-name: "ID: 30.1 --- score: 0.65"
   html: |
-    (0,1) is infinite, prove by infinite subsets. Using contradiction, we can show (0,1) is not denumerable because one number always has a different n\)^{th}\) decimal place to that of the functions. 
+    (0,1) is infinite, prove by infinite subsets. Using contradiction, we can show (0,1) is not denumerable because one number always has a different (\n^{th}\) decimal place to that of the functions. 
 
 - item-num: 9
   item-name: "ID: 102.2 --- score: 0.51"
