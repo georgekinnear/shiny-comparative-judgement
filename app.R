@@ -460,6 +460,9 @@ server <- function(input, output, session) {
     advance_page()
   })
   observeEvent(input$completed_evaluation, {
+    validate(
+      need(input$eval_rating, 'Please select which method you preferred.')
+    )
     # save their answers to the database
     dbWriteTable(
       pool,
