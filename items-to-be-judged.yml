@@ -40,7 +40,7 @@
 - item-num: 8
   item-name: "ID: 30.1 --- score: 0.65"
   html: |
-    (0,1) is infinite, prove by infinite subsets. Using contradiction, we can show (0,1) is not denumerable because one number always has a different (\n^{th}\) decimal place to that of the functions. 
+    (0,1) is infinite, prove by infinite subsets. Using contradiction, we can show (0,1) is not denumerable because one number always has a different \(n^{th}\) decimal place to that of the functions. 
 
 - item-num: 9
   item-name: "ID: 102.2 --- score: 0.51"
