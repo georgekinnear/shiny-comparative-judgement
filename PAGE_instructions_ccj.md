@@ -1,3 +1,5 @@
+## Instructions: Comparative judgement (chained pairs)
+
 On the next page, we will show you a pair of items.
 
 Please decide: **[JUDGING PROMPT]**

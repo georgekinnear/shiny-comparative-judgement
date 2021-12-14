@@ -362,10 +362,21 @@ server <- function(input, output, session) {
       })
     }
     # Instruction pages
-    if (page_to_show$page %in% c("instructions_proof","instructions_cj","instructions_ccj","instructions_rank")) {
+    if (page_to_show$page == "instructions_proof") {
       output$pageContent <- renderUI({
         tagList(
-          h3("Instructions"),
+          markdown::markdownToHTML(text = read_file(paste0("PAGE_", page_to_show$page, ".md")),
+                                   fragment.only = TRUE) %>% HTML() %>% withMathJax(),
+          fluidRow(
+            column(4, offset = 4, actionButton(paste0("completed_", page_to_show$page), "Continue", class = "btn-success btn-lg btn-block", icon = icon("check")))
+          )
+        )
+      })
+    }
+    if (page_to_show$page %in% c("instructions_cj","instructions_ccj","instructions_rank")) {
+      output$pageContent <- renderUI({
+        tagList(
+          #h3("Instructions"),
           markdown::markdownToHTML(text = read_file(paste0("PAGE_", page_to_show$page, ".md")),
                                    fragment.only = TRUE) %>% 
             str_replace("\\[JUDGING PROMPT\\]", assigned_study[["judging_prompt"]]) %>% HTML() %>% withMathJax(),
