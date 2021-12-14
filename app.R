@@ -244,6 +244,7 @@ server <- function(input, output, session) {
       }
     } else if (isTruthy(query[['ADMIN_USER']]=="AdminPassword123")) {
       # admin dashboard
+      page_to_show$page = "Admin dashboard"
       output$pageContent <- renderUI({
         tagList(
           navbarPage("CJ Dashboard",
@@ -714,13 +715,11 @@ server <- function(input, output, session) {
   #
   output$judge_tally <- renderTable({
     study_status %>%
-      arrange(study) %>% 
-      separate(study, into = c("prompt", "method")) %>% 
-      select(-judging_method, -judgements_per_judge)
+      arrange(study)
   })
   output$summary_table <- renderTable({
     judges %>%
-      select(study_id, judge_id, num_judgements, attention_checks_passed, time_spent_s) %>% 
+      select(study_id, judge_id, start_time = shiny_timestamp, num_judgements, time_spent_s) %>% 
       arrange(study_id, -num_judgements)
   })
   
@@ -739,7 +738,7 @@ server <- function(input, output, session) {
   )
   
   output$judgements_table <- renderDT(
-    all_existing_judgements,
+    pool %>% tbl("decisions") %>% collect(),
     filter = "top",
     options = list(pageLength = 20),
     rownames = FALSE
@@ -748,7 +747,7 @@ server <- function(input, output, session) {
   output$download_judgements <- downloadHandler(
     filename = "judgements.csv",
     content = function(file) {
-      write_csv(all_existing_judgements, file, na = "")
+      write_csv(pool %>% tbl("decisions") %>% collect(), file, na = "")
     }
   )
   
