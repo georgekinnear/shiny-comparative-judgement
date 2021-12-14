@@ -190,7 +190,7 @@ server <- function(input, output, session) {
     # Check the URL for parameters e.g. ?judge=123
     # This is used to give each judge a unique URL that they can reload, or return to later
     query <- parseQueryString(session$clientData$url_search)
-    
+
     if (isTruthy(query[['JUDGE']])) {
       
       if(isTruthy(judge_code) && query[['JUDGE']] == judge_code) {
@@ -706,57 +706,6 @@ server <- function(input, output, session) {
   
   
   
-
-  # Give a message when they reach the required number of comparisons
-  # TODO - make this return them to the special Prolific landing page that will mark them as completed
-  observe({
-    if(!exists("pair")) return()
-    if (pair$pair_num <= 100) return()
-    
-    # update the page content
-    output$pageContent <- renderUI({
-      tagList(
-        htmlOutput("judging_progress"),
-        h3("Thank you!"),
-        p("You have now completed the comparisons needed for this survey."),
-        p("Thank you for taking part."),
-        p("If you have any comments about the judging process, please leave them here:"),
-        fluidRow(
-          column(8, offset = 2, htmlOutput("final_comments"))
-        ),
-        fluidRow(
-          column(4, offset = 4, actionButton("saveFinalComments", "Save and return to Prolific", class = "btn-success btn-lg btn-block", icon = icon("check")))
-        )
-      )
-    })
-  })
-  output$final_comments <- renderUI({
-    if(pair$pair_num > 0) {
-      textAreaInput("final_comment", label = "Comments (optional)", width = "100%", height = "6em")
-    }
-  })
-  observeEvent(input$saveFinalComments, {
-    dbWriteTable(
-      pool,
-      "comments",
-      tibble(
-        judge_id = session_info$judge_id,
-        final_comments = input$final_comment
-      ),
-      row.names = FALSE,
-      append = TRUE
-    )
-    prolific_completion_url <- "https://app.prolific.co/submissions/complete?cc=XXXXX"
-    output$pageContent <- renderUI({
-      tagList(
-        p("Saved", style = "text-align:center"),
-        p("Redirecting to Prolific", style = "text-align:center"),
-        p(prolific_completion_url, style = "text-align:center"),
-        tags$script(paste0('window.location.replace("',prolific_completion_url,'");'))
-      )
-    })
-  })
-
   #
   # Admin dashboard
   #
