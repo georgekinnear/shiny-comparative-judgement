@@ -135,7 +135,7 @@ make_ccj_pairs <- function(pairs_to_make = 20, restrict_to_study_id = NULL) {
     
     if(nrow(pairs_to_judge) == 0) {
       # start with the least judged pairs
-      new_pairs_to_judge <- all_pairs_status %>% 
+      new_pair_to_judge <- all_pairs_status %>% 
         filter(n == min(n)) %>% 
         slice_sample(n = 1)
     } else {
