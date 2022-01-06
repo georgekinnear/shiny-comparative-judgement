@@ -94,11 +94,11 @@ scripts <- read_yaml("items-to-be-judged.yml") %>%
 
 
 assign_to_study <- function() {
-  print(study_status %>% mutate(judge_slots = target_judges - num_judges))
+  print(study_status %>% mutate(judge_slots = target_judges - num_judges_completed))
   # allocate to one of the study conditions, weighted by current progress
   study_status %>%
     # identify the number of judges needed by each condition to meet its target
-    mutate(judge_slots = target_judges - num_judges) %>%
+    mutate(judge_slots = target_judges - num_judges_completed) %>%
     # pick the condition with the most open slots
     slice_max(judge_slots, n = 1, with_ties = FALSE) %>% 
     #pull(study_id)
@@ -179,7 +179,7 @@ server <- function(input, output, session) {
         summarise(
           num_judges = n_distinct(judge_id),
           # TODO - this is not correct, but it may be hard to do if the numbers differ by study based on study_pages
-          num_judges_completed = sum(num_judgements == 100, na.rm = TRUE),
+          num_judges_completed = sum(num_judgements > 0, na.rm = TRUE),
           num_judgements = sum(num_judgements, na.rm = TRUE)
         ),
       by = "study"
